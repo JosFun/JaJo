@@ -5,9 +5,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_ausgaben">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ausgaben"/>
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"
+        android:textSize="30sp"
+        android:layout_margin="4dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/josh_zahlt"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/ausgaben_divider">
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:id="@+id/jasmin_list">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:id="@+id/josh_list">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+</LinearLayout>
 </FrameLayout>
