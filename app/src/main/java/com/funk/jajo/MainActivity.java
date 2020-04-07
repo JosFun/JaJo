@@ -45,7 +45,7 @@ public class MainActivity extends AppBarActivity {
         setContentView(R.layout.activity_main);
 
         this.createFragments();
-        this.setAppBar();
+        this.appBarPresent = this.setAppBar();
 
         this.viewModel = ViewModelProviders.of ( this ).get( AppViewModel.class );
         this.viewModel.setCurrentFragment( FragmentType.AUSGABEN );
