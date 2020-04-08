@@ -5,4 +5,7 @@
 
     <string name="josh_zahlt">Josh zahlt</string>
     <string name="jasmin_zahlt">Jasmin zahlt</string>
+
+    <string name="first">Jasmin</string>
+    <string name="second">Josh</string>
 </resources>

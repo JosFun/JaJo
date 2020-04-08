@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.funk.jajo.customtypes.Person;
+
 public class MainActivity extends AppBarActivity {
 
     private AusgabenFragment ausgabenFragment;
@@ -49,6 +51,11 @@ public class MainActivity extends AppBarActivity {
 
         this.viewModel = ViewModelProviders.of ( this ).get( AppViewModel.class );
         this.viewModel.setCurrentFragment( FragmentType.AUSGABEN );
+
+        /* Create the two persons that use this app in order to share their payments with each other. */
+        this.viewModel.setFirst( new Person( getString ( R.string.first)));
+        this.viewModel.setSecond( new Person ( getString ( R.string.second)));
+
         this.setToolBarText( this.viewModel.getCurrentFragment());
 
         if ( this.viewModel.getCurrentFragment() == FragmentType.AUSGABEN ) {

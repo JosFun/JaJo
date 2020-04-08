@@ -5,10 +5,10 @@ import java.util.Date;
 
 public class Person implements Comparable<Person>{
 
-    private Name name;
+    private String name;
     private ArrayList<Payment> payments;
 
-    public Person ( Name name ) {
+    public Person ( String name ) {
         this.name = name;
     }
 
@@ -78,6 +78,10 @@ public class Person implements Comparable<Person>{
         }
 
         return payments;
+    }
+
+    public String getName( ) {
+        return this.name;
     }
 
     @Override

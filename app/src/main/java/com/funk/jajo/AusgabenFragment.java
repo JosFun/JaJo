@@ -1,15 +1,19 @@
 package com.funk.jajo;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.funk.jajo.customtypes.DialogListener;
+import com.funk.jajo.customtypes.Person;
 import com.funk.jajo.dialogs.AddPaymentDialog;
+import com.funk.jajo.recycleradapters.PaymentListAdapter;
 
 import org.apache.commons.net.PrintCommandListener;
 import org.apache.commons.net.ftp.FTP;
@@ -22,11 +26,23 @@ public class AusgabenFragment extends Fragment implements DialogListener {
 
     private View fragView = null;
 
+    private AppViewModel viewModel = null;
+
+    private RecyclerView recyclerFirst = null;
+    private RecyclerView recyclerSecond = null;
+
+    private PaymentListAdapter paymentAdapterFirst = null;
+    private PaymentListAdapter paymentAdapterSecond = null;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         this.fragView = inflater.inflate(R.layout.fragment_ausgaben, container, false);
+
+        if ( this.getActivity() != null ) {
+            this.viewModel = ViewModelProviders.of ( this.getActivity()).get(AppViewModel.class);
+        }
 
         FloatingActionButton addButton = this.fragView.findViewById(R.id.floating_action_expenses);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -38,12 +54,32 @@ public class AusgabenFragment extends Fragment implements DialogListener {
             }
         });
 
+        this.recyclerFirst = this.fragView.findViewById( R.id.first_list);
+        this.recyclerSecond = this.fragView.findViewById( R.id.second_list );
+        this.paymentAdapterFirst = new PaymentListAdapter( this.viewModel.getFirst() );
+        this.paymentAdapterSecond = new PaymentListAdapter( this.viewModel.getSecond() );
+
         return this.fragView;
     }
 
+    /**
+     * Once the {@link AddPaymentDialog} calls this method on its listener {@link AusgabenFragment},
+     * assign the selected {@link com.funk.jajo.customtypes.Payment} on it to the correct {@link Person}.
+     * @param dialog
+     */
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
+        if ( dialog instanceof  AddPaymentDialog ) {
+            if ( this.viewModel != null ) {
+                AddPaymentDialog paymentDialog = ( AddPaymentDialog ) dialog;
 
+                if ( paymentDialog.getSelectedPerson().equals( this.viewModel.getFirst().getName())) {
+                    this.viewModel.getFirst().addPayment( paymentDialog.getExpense());
+                } else {
+                    this.viewModel.getSecond().addPayment( paymentDialog.getExpense());
+                }
+            }
+        }
     }
 
     @Override
