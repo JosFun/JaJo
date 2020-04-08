@@ -7,7 +7,7 @@ import java.util.TimeZone;
 
 public class Payment implements Comparable<Payment> {
     private String description;
-    private double amount;
+    private Money amount;
     private Calendar calendar;
 
     public Payment ( String descr, double amount ) {
@@ -16,12 +16,18 @@ public class Payment implements Comparable<Payment> {
 
     public Payment ( String descr, double amount, Date date ) {
         this.description = descr;
-        this.amount = amount;
+        this.amount = new Money( amount );
         this.calendar = Calendar.getInstance();
         this.calendar.setTime ( date );
     }
 
-    public double getAmount ( ) { return this.amount; }
+    public Payment ( String descr, Money amount, Calendar c ) {
+        this.description = descr;
+        this.amount = new Money ( amount );
+        this.calendar = c;
+    }
+
+    public double getAmount ( ) { return this.amount.getValue(); }
 
     public String getDescription ( ) { return this.description; }
 
