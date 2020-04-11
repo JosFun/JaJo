@@ -28,6 +28,8 @@ public class Payment implements Comparable<Payment> {
 
     public double getAmount ( ) { return this.amount.getValue(); }
 
+    public Money getMoney ( ) { return this.amount; }
+
     public Date getDate ( ) { return this.calendar.getTime ( ); }
 
     public String getDateString ( ) {

@@ -8,6 +8,21 @@ public class Person implements Comparable<Person>{
     private String name;
     private ArrayList<Payment> payments;
 
+    public static String makeToCentsFormat ( Money money ) {
+        String s = "";
+        try {
+            s = Double.toString( money.getValue() );
+            char [ ] ar = s.toCharArray();
+            if ( ar [ ar.length - 2] == '.') {
+                s += "0";
+            }
+        } catch ( NumberFormatException e ) {
+            return "0.00€";
+        }
+
+        return s + "€";
+    }
+
     public Person ( String name ) {
         this.name = name;
         this.payments = new ArrayList<>();
@@ -31,7 +46,7 @@ public class Person implements Comparable<Person>{
             sum += p.getAmount();
         }
 
-        return sum;
+        return new Money (sum).getValue();
     }
 
     /**
@@ -50,7 +65,7 @@ public class Person implements Comparable<Person>{
            }
        }
 
-       return sum;
+       return new Money(sum).getValue();
     }
 
     /**
