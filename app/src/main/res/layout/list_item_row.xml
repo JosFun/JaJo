@@ -2,41 +2,56 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/list_item_card">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/list_item_card"
+    android:layout_margin="2dp"
+    app:cardBackgroundColor="@color/colorAccent"
+    app:contentPadding="4dp">
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@color/colorWhite">
 
         <TextView
             android:id="@+id/list_item_money"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:layout_margin="4dp"
+            android:gravity="top"
+            android:textAlignment="gravity"
             android:text="53.13€"/>
 
         <TextView
-            android:id="@+id/list_item_descr"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:layout_margin="4dp"
-            android:textSize="14sp"
-            android:text="Description"/>
-
-        <TextView
             android:id="@+id/list_item_date"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="18sp"
+            android:textStyle="bold"
             android:layout_margin="4dp"
+            android:gravity="top"
+            android:textAlignment="gravity"
             android:text="07.04.2020"/>
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/list_item_descr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/list_item_date"
+            android:textSize="16sp"
+            android:layout_margin="4dp"
+            android:gravity="top"
+            android:textAlignment="gravity"
+            android:text="Einkauf Netto"/>
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.v7.widget.CardView>

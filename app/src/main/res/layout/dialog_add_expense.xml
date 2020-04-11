@@ -36,38 +36,7 @@
             />
     </LinearLayout>
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/expense_name"
-            android:text="Beschreibung"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:scaleType="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="4dp"
-            />
 
-        <EditText
-            android:id="@+id/expense_name_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="4dp"
-            android:hint="Einkauf Netto"
-            android:inputType="text"
-            android:imeOptions="actionDone"
-            />
-
-    </LinearLayout>
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -100,6 +69,39 @@
             android:imeOptions="actionDone"
             />
     </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/expense_descr"
+            android:text="Beschreibung"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:scaleType="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            />
+
+        <EditText
+            android:id="@+id/expense_descr_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            android:hint="Einkauf Netto"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            />
+    </LinearLayout>
+
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
         android:layout_height="wrap_content"

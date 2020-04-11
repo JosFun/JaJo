@@ -34,18 +34,16 @@ public class AddPaymentDialog extends DialogFragment {
      */
     private Money expenseAmount;
     /**
-     * The {@link String} that gives the {@link Payment} entered by the user a proper description.
-     */
-    private String expenseName;
-    /**
      * The {@link Calendar} that stores the date, the {@link Payment} has been done.
      */
     private Calendar expenseDate;
 
+    private String description;
+
     /**
      * The {@link String} representing the {@link Person} the user has selected on this {@link AddPaymentDialog}
      */
-    private String personSelection;
+    private String personSelection = null;
 
     @Override
     public Dialog onCreateDialog ( Bundle savedInstanceState ) {
@@ -59,34 +57,37 @@ public class AddPaymentDialog extends DialogFragment {
         builder.setView(v);
 
         final EditText enterMoney = v.findViewById(R.id.expense_amount_edit);
-        final EditText enterDescr = v.findViewById(R.id.expense_name_edit);
+        final EditText enterDescr = v.findViewById(R.id.expense_descr_edit);
         final DatePicker datePicker = v.findViewById(R.id.expense_date_edit);
         final Spinner personSpinner = v.findViewById(R.id.expense_person_edit);
+
+        /* Setup the spinner on this dialog needed for entering the name of the Person
+        * responsible for the payment. */
+        if ( personSpinner != null ) {
+            String [ ] persons = { getString( R.string.first ), getString( R.string.second ) };
+            final ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(
+                    AddPaymentDialog.this.getActivity(),
+                    R.layout.support_simple_spinner_dropdown_item, persons );
+
+            personSpinner.setAdapter( spinnerAdapter );
+            personSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    AddPaymentDialog.this.personSelection = spinnerAdapter.getItem( position );
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    AddPaymentDialog.this.personSelection = spinnerAdapter.getItem( 0 );
+                }
+            });
+
+        }
 
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                if ( personSpinner != null ) {
-                    String [ ] persons = { getString( R.string.first ), getString( R.string.second ) };
-                    final ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(
-                            AddPaymentDialog.this.getActivity(),
-                            R.layout.support_simple_spinner_dropdown_item, persons );
-
-                    personSpinner.setAdapter( spinnerAdapter );
-                    personSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            AddPaymentDialog.this.personSelection = spinnerAdapter.getItem( position );
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-                            AddPaymentDialog.this.personSelection = spinnerAdapter.getItem( 0 );
-                        }
-                    });
-
-                }
                 if ( enterMoney != null ) {
                     String moneyStr = enterMoney.getText().toString();
                     double value = 0;
@@ -94,12 +95,17 @@ public class AddPaymentDialog extends DialogFragment {
                         value = Double.parseDouble(moneyStr);
                     } catch ( NumberFormatException e ) {
                         e.printStackTrace();
+                        return;
                     }
                     AddPaymentDialog.this.expenseAmount = new Money ( value );
                 }
 
                 if ( enterDescr != null ) {
-                    AddPaymentDialog.this.expenseName = enterDescr.getText().toString();
+                    String s = enterDescr.getText().toString();
+                    if ( s.length()  == 0 ) {
+                        return;
+                    }
+                    AddPaymentDialog.this.description = s;
                 }
 
                 if ( datePicker != null ) {
@@ -145,7 +151,7 @@ public class AddPaymentDialog extends DialogFragment {
      * @return the {@link Payment} having been specified on this {@link AddPaymentDialog}
      */
     public Payment getExpense ( ) {
-        return new Payment( this.expenseName, this.expenseAmount, this.expenseDate);
+        return new Payment( this.description, this.expenseAmount, this.expenseDate);
     }
 
     /**
@@ -154,6 +160,9 @@ public class AddPaymentDialog extends DialogFragment {
      * @return the {@link String} representation of the associated {@link Person}.
      */
     public String getSelectedPerson ( ) {
+        if ( this.personSelection == null ) {
+            this.personSelection = getString( R.string.first );
+        }
         return this.personSelection;
     }
 }

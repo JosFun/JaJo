@@ -52,9 +52,11 @@ public class MainActivity extends AppBarActivity {
         this.viewModel = ViewModelProviders.of ( this ).get( AppViewModel.class );
         this.viewModel.setCurrentFragment( FragmentType.AUSGABEN );
 
-        /* Create the two persons that use this app in order to share their payments with each other. */
-        this.viewModel.setFirst( new Person( getString ( R.string.first)));
-        this.viewModel.setSecond( new Person ( getString ( R.string.second)));
+        if ( this.viewModel.getFirst() == null && this.viewModel.getSecond() == null ) {
+            /* Create the two persons that use this app in order to share their payments with each other. */
+            this.viewModel.setFirst( new Person( getString ( R.string.first)));
+            this.viewModel.setSecond( new Person ( getString ( R.string.second)));
+        }
 
         this.setToolBarText( this.viewModel.getCurrentFragment());
 

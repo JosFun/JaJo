@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.funk.jajo.customtypes.DialogListener;
 import com.funk.jajo.customtypes.Person;
@@ -56,8 +58,19 @@ public class AusgabenFragment extends Fragment implements DialogListener {
 
         this.recyclerFirst = this.fragView.findViewById( R.id.first_list);
         this.recyclerSecond = this.fragView.findViewById( R.id.second_list );
-        this.paymentAdapterFirst = new PaymentListAdapter( this.viewModel.getFirst() );
-        this.paymentAdapterSecond = new PaymentListAdapter( this.viewModel.getSecond() );
+        this.paymentAdapterFirst = new PaymentListAdapter( this.viewModel.getFirst(), this.getContext() );
+        this.paymentAdapterSecond = new PaymentListAdapter( this.viewModel.getSecond(), this.getContext());
+
+        LinearLayoutManager llm1 = new LinearLayoutManager(this.getContext());
+        llm1.setOrientation(LinearLayoutManager.VERTICAL);
+        this.recyclerFirst.setLayoutManager(llm1);
+
+        LinearLayoutManager llm2 = new LinearLayoutManager(this.getContext());
+        llm2.setOrientation(LinearLayoutManager.VERTICAL);
+        this.recyclerSecond.setLayoutManager(llm2);
+
+        this.recyclerFirst.setAdapter( paymentAdapterFirst );
+        this.recyclerSecond.setAdapter( paymentAdapterSecond );
 
         return this.fragView;
     }
@@ -75,8 +88,10 @@ public class AusgabenFragment extends Fragment implements DialogListener {
 
                 if ( paymentDialog.getSelectedPerson().equals( this.viewModel.getFirst().getName())) {
                     this.viewModel.getFirst().addPayment( paymentDialog.getExpense());
+                    this.paymentAdapterFirst.updateData();
                 } else {
                     this.viewModel.getSecond().addPayment( paymentDialog.getExpense());
+                    this.paymentAdapterSecond.updateData();
                 }
             }
         }

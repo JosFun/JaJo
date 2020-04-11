@@ -10,6 +10,7 @@ public class Person implements Comparable<Person>{
 
     public Person ( String name ) {
         this.name = name;
+        this.payments = new ArrayList<>();
     }
 
     public void addPayment ( Payment p ) {
@@ -57,6 +58,9 @@ public class Person implements Comparable<Person>{
      * @return The {@link ArrayList} of {@link Payment}s associated with this {@ink Person}
      */
     public ArrayList<Payment> getPayments ( ) {
+        if ( this.payments == null || this.payments.size() == 0 ) {
+            return new ArrayList<>();
+        }
         return new ArrayList<>( this.payments);
     }
 
