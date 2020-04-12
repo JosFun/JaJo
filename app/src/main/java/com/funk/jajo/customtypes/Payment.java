@@ -42,10 +42,25 @@ public class Payment implements Comparable<Payment> {
     public String getDescription ( ) {
         return this.description;
     }
+
     @Override
     public int compareTo(Payment o) {
         if ( o == null ) return 1;
 
        else return this.calendar.compareTo( o.calendar );
+    }
+
+    /**
+     * Two {@link Payment}s are equal, if their money amounts and their dates are equal.
+     * @param o - An arbitrary Object
+     * @return Whether or not this {@link Payment} and the other {@link Object} are equal.
+     * */
+    @Override
+    public boolean equals ( Object o ) {
+        if ( o == null ) return false;
+        if ( o instanceof Payment) {
+            return (( Payment ) o).amount.getValue() == this.amount.getValue()
+                    && this.compareTo( (Payment)o) == 0;
+        } else return false;
     }
 }

@@ -1,6 +1,8 @@
 package com.funk.jajo.customtypes;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 public class Person implements Comparable<Person>{
@@ -97,6 +99,26 @@ public class Person implements Comparable<Person>{
         }
 
         return payments;
+    }
+
+    public Person merge ( Person p ) {
+        if ( !p.getName().equals(this.name)) {
+            return this;
+        }
+
+        for ( Payment payment: p.payments ) {
+            if ( !this.payments.contains( payment)) {
+                this.payments.add ( payment );
+                Collections.sort( this.payments, new Comparator<Payment>() {
+                    @Override
+                    public int compare(Payment o1, Payment o2) {
+                        return o1.compareTo(o2);
+                    }
+                });
+            }
+        }
+
+        return this;
     }
 
     public String getName( ) {

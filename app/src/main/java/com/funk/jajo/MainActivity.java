@@ -1,15 +1,14 @@
 package com.funk.jajo;
 
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
+import com.funk.jajo.customtypes.FTPStorable;
+import com.funk.jajo.customtypes.FTPStorer;
 import com.funk.jajo.customtypes.Person;
 import com.funk.jajo.customtypes.PersonStorer;
 
@@ -21,35 +20,79 @@ public class MainActivity extends AppBarActivity {
     private EinkaufslisteFragment listenFragment;
     private AppViewModel viewModel;
 
-    private void loadPersonData ( ) {
-        SharedPreferences sP = this.getSharedPreferences( getString(R.string.PERSON_SHARED_PREF), MODE_PRIVATE);
-        String loadKey1 = getString ( R.string.PERSON_KEY ) + FIRST_SUFFIX;
-        String loadKey2 = getString ( R.string.PERSON_KEY ) + SECOND_SUFFIX;
+    private void loadData( ) {
+        FTPStorable loadedData = null;
+        /* First, check whether or not we can load already existing data from the internet.*/
+        if (FTPStorer.checkForInternetConnection( this.getApplicationContext())) {
+            FTPStorer storer = new FTPStorer( this.getApplicationContext());
+            loadedData = storer.getFTPStorable();
+        }
 
-        PersonStorer ps1 = new PersonStorer( loadKey1, sP);
-        PersonStorer ps2 = new PersonStorer( loadKey2, sP );
+        Person onlineFirst = null;
+        Person onlineSecond = null;
+        Person offlineFirst = null;
+        Person offlineSecond = null;
 
-        Person p1 = ps1.loadPerson();
-        Person p2 = ps2.loadPerson();
+
+        /* If an FTPStorable could have been fetched from the server: Load its data into the app.*/
+        if ( loadedData != null ) {
+            onlineFirst = loadedData.getFirst();
+            onlineSecond = loadedData.getSecond();
+        }
+
+        {
+            SharedPreferences sP = this.getSharedPreferences(getString(R.string.PERSON_SHARED_PREF), MODE_PRIVATE);
+            String loadKey1 = getString(R.string.PERSON_KEY) + FIRST_SUFFIX;
+            String loadKey2 = getString(R.string.PERSON_KEY) + SECOND_SUFFIX;
+
+            PersonStorer ps1 = new PersonStorer(loadKey1, sP);
+            PersonStorer ps2 = new PersonStorer(loadKey2, sP);
+
+            offlineFirst = ps1.loadPerson();
+            offlineSecond = ps2.loadPerson();
+        }
+
+        Person p1 = null;
+        Person p2 = null;
+
+        if ( ( onlineFirst == null || onlineSecond == null) && ( offlineFirst == null || offlineSecond == null ) ) {
+            return;
+        } else if ( onlineFirst == null || onlineSecond == null ) {
+            p1 = offlineFirst;
+            p2 = offlineSecond;
+        } else if ( offlineFirst == null || offlineSecond == null ) {
+            p1 = onlineFirst;
+            p2 = onlineSecond;
+            /* A local and an online version could have been fetched. Compare them and merge!*/
+        } else {
+            onlineFirst.merge ( offlineFirst);
+            onlineSecond.merge( offlineSecond);
+        }
 
         if ( this.viewModel == null ) {
             this.viewModel = ViewModelProviders.of ( this ).get( AppViewModel.class );
         }
 
-        if ( ps1 != null && ps2 != null ) {
+        if ( p1 != null && p2 != null ) {
             this.viewModel.setFirst( p1 );
             this.viewModel.setSecond( p2 );
         }
-
     }
 
-    private void storePersonData ( ) {
+    private void storeData( ) {
         if ( this.viewModel != null && this.viewModel.getSecond() != null && this.viewModel.getSecond() != null ) {
-            SharedPreferences sP = this.getSharedPreferences( getString(R.string.PERSON_SHARED_PREF), MODE_PRIVATE );
-            PersonStorer pS1 = new PersonStorer( this.viewModel.getFirst(),
-                    getString(R.string.PERSON_KEY )+ FIRST_SUFFIX, sP);
-            PersonStorer pS2 = new PersonStorer( this.viewModel.getSecond(),
-                    getString(R.string.PERSON_KEY) + SECOND_SUFFIX, sP);
+            {
+                /* First: store it locally */
+                SharedPreferences sP = this.getSharedPreferences(getString(R.string.PERSON_SHARED_PREF), MODE_PRIVATE);
+                PersonStorer pS1 = new PersonStorer(this.viewModel.getFirst(),
+                        getString(R.string.PERSON_KEY) + FIRST_SUFFIX, sP);
+                PersonStorer pS2 = new PersonStorer(this.viewModel.getSecond(),
+                        getString(R.string.PERSON_KEY) + SECOND_SUFFIX, sP);
+            }
+            /* Afterwards: Store it on the ftp server */
+            {
+                FTPStorer storer = new FTPStorer( new FTPStorable( this.viewModel.getFirst(), this.viewModel.getSecond()), this.getApplicationContext());
+            }
         }
 
     }
@@ -89,7 +132,7 @@ public class MainActivity extends AppBarActivity {
         this.viewModel.setCurrentFragment( FragmentType.AUSGABEN );
 
         /* Try to load existing persons from the phone's storage */
-        this.loadPersonData();
+        this.loadData();
 
         if ( this.viewModel.getFirst() == null && this.viewModel.getSecond() == null ) {
             /* Create the two persons that use this app in order to share their payments with each other. */
@@ -119,7 +162,7 @@ public class MainActivity extends AppBarActivity {
     public void onPause ( ) {
         super.onPause();
         /* Store the Persons on the phone. */
-        this.storePersonData();
+        this.storeData();
     }
 
 }
