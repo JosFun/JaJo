@@ -14,6 +14,7 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +36,7 @@ public class FTPStorer {
      * @return whether or not an internet connection exists
      */
     public static final boolean checkForInternetConnection ( Context context ) {
+
         ConnectivityManager cm =
                 (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -66,7 +68,7 @@ public class FTPStorer {
 
             this.ftpClient.changeWorkingDirectory( DIR_NAME );
 
-            InputStream input  = org.apache.commons.io.IOUtils.toInputStream( jsonFile, "UTF-8");
+            InputStream input  = new ByteArrayInputStream( jsonFile.getBytes());
             this.ftpClient.deleteFile(FILE_NAME);
 
             this.ftpClient.storeFile( FILE_NAME, input);
