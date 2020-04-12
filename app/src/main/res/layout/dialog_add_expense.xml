@@ -1,31 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/dialog_add_expense_linear"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorPrimary"
+    android:outlineProvider="paddedBounds">
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:elevation="2dp"
+        android:outlineProvider="paddedBounds">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/expense_person"
             android:text="Wer hat gezahlt?"
             android:textStyle="bold"
-            android:textSize="15sp"
+            android:textSize="22sp"
+            android:textColor="@color/colorAccent"
             android:scaleType="center"
             android:layout_marginTop="10dp"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="4dp"
+
             />
 
         <Spinner
             android:id="@+id/expense_person_edit"
             android:layout_width="match_parent"
+            android:textColor="@color/colorAccent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginStart="4dp"
@@ -33,6 +44,8 @@
             android:layout_marginBottom="4dp"
             android:inputType="text"
             android:imeOptions="actionDone"
+            android:elevation="5dp"
+            android:outlineProvider="paddedBounds"
             />
     </LinearLayout>
 
@@ -40,19 +53,23 @@
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:elevation="2dp"
+        android:outlineProvider="paddedBounds">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/expense_amount"
             android:text="Betrag"
             android:textStyle="bold"
-            android:textSize="20sp"
+            android:textSize="22sp"
+            android:textColor="@color/colorAccent"
             android:scaleType="center"
             android:layout_marginTop="10dp"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="4dp"
+
             />
 
         <EditText
@@ -64,23 +81,30 @@
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="4dp"
             android:hint="56.78€"
+            android:textColorHint="@color/colorAccent"
+            android:textColor="@color/colorAccent"
             android:inputType="number"
             android:digits="0123456789."
             android:imeOptions="actionDone"
+            android:elevation="5dp"
+            android:outlineProvider="paddedBounds"
             />
     </LinearLayout>
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:elevation="2dp"
+        android:outlineProvider="paddedBounds">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/expense_descr"
             android:text="Beschreibung"
             android:textStyle="bold"
-            android:textSize="20sp"
+            android:textSize="22sp"
+            android:textColor="@color/colorAccent"
             android:scaleType="center"
             android:layout_marginTop="10dp"
             android:layout_marginStart="4dp"
@@ -92,27 +116,34 @@
             android:id="@+id/expense_descr_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
             android:layout_marginTop="10dp"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="4dp"
             android:hint="Einkauf Netto"
+            android:textColorHint="@color/colorAccent"
             android:inputType="text"
             android:imeOptions="actionDone"
+            android:elevation="5dp"
+            android:outlineProvider="paddedBounds"
             />
     </LinearLayout>
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:elevation="2dp"
+        android:outlineProvider="paddedBounds">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/expense_date"
             android:text="Datum"
             android:textStyle="bold"
-            android:textSize="20sp"
+            android:textColor="@color/colorAccent"
+            android:textSize="22sp"
             android:scaleType="center"
             android:layout_marginTop="10dp"
             android:layout_marginStart="4dp"
@@ -125,9 +156,14 @@
             android:layout_height="wrap_content"
             android:id="@+id/expense_date_edit"
             android:datePickerMode="spinner"
-            android:calendarViewShown="false">
+            android:calendarViewShown="false"
+            android:textColor="@color/colorAccent"
+            android:calendarTextColor="@color/colorAccent"
+            android:elevation="5dp"
+            android:outlineProvider="paddedBounds">
 
         </DatePicker>
     </LinearLayout>
 
 </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

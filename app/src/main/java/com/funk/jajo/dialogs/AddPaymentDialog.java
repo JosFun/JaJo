@@ -4,11 +4,13 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -67,8 +69,9 @@ public class AddPaymentDialog extends DialogFragment {
             String [ ] persons = { getString( R.string.first ), getString( R.string.second ) };
             final ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(
                     AddPaymentDialog.this.getActivity(),
-                    R.layout.support_simple_spinner_dropdown_item, persons );
+                    R.layout.spinner_item, persons );
 
+            spinnerAdapter.setDropDownViewResource(R.layout.spinner_item);
             personSpinner.setAdapter( spinnerAdapter );
             personSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -135,7 +138,27 @@ public class AddPaymentDialog extends DialogFragment {
             }
         });
 
-        return builder.create();
+
+        Dialog dialog = builder.create();
+
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button posButton = ((AlertDialog) dialog).getButton( AlertDialog.BUTTON_POSITIVE );
+                Button negButton = ((AlertDialog) dialog).getButton( AlertDialog.BUTTON_NEGATIVE );
+
+                posButton.setBackgroundColor(ContextCompat.getColor(((AlertDialog) dialog).getContext(), R.color.colorAccent));
+                posButton.setTextColor( ContextCompat.getColor( ((AlertDialog) dialog).getContext(), R.color.colorPrimary));
+
+                negButton.setBackgroundColor(ContextCompat.getColor(((AlertDialog) dialog).getContext(), R.color.colorAccent));
+                negButton.setTextColor( ContextCompat.getColor( ((AlertDialog) dialog).getContext(), R.color.colorPrimary));
+            }
+        });
+
+
+        return dialog;
+
     }
 
     /**

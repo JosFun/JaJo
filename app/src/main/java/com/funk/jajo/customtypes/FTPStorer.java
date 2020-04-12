@@ -128,7 +128,7 @@ public class FTPStorer {
      */
     private boolean directoryExists ( FTPFile[] dirs, String dirName ) {
         for ( FTPFile f: dirs ) {
-            if ( f.isDirectory() && f.getName().equals ( "dirName")) return true;
+            if ( f.isDirectory() && f.getName().equals ( dirName)) return true;
         }
         return false;
     }

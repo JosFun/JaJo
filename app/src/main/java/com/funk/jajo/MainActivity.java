@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.funk.jajo.customtypes.FTPStorable;
@@ -65,8 +67,8 @@ public class MainActivity extends AppBarActivity {
             p2 = onlineSecond;
             /* A local and an online version could have been fetched. Compare them and merge!*/
         } else {
-            onlineFirst.merge ( offlineFirst);
-            onlineSecond.merge( offlineSecond);
+            p1 = onlineFirst.merge ( offlineFirst);
+            p2 = onlineSecond.merge( offlineSecond);
         }
 
         if ( this.viewModel == null ) {
@@ -163,6 +165,25 @@ public class MainActivity extends AppBarActivity {
         super.onPause();
         /* Store the Persons on the phone. */
         this.storeData();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu( Menu menu ) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate( R.menu.app_bar_menu, menu );
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected (@NonNull MenuItem item) {
+        switch ( item.getItemId()) {
+            case R.id.settings_button:
+                /* Show settings menu */
+                return true;
+            default:
+                return super.onOptionsItemSelected( item );
+        }
     }
 
 }

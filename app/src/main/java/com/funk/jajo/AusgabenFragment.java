@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.funk.jajo.customtypes.DialogListener;
 import com.funk.jajo.customtypes.Person;
@@ -35,6 +37,20 @@ public class AusgabenFragment extends Fragment implements DialogListener {
 
     private PaymentListAdapter paymentAdapterFirst = null;
     private PaymentListAdapter paymentAdapterSecond = null;
+
+    private void updateNextPayer ( ) {
+        TextView nextPayer = this.fragView.findViewById(R.id.next_payer);
+        if ( nextPayer == null ) return;
+        double sum =
+                viewModel.getFirst().getTotalPayments() + viewModel.getSecond().getTotalPayments();
+        if ( viewModel.getFirst().getTotalPayments() < 0.4 * sum ) {
+            nextPayer.setText(viewModel.getFirst().getName() + " zahlt!");
+            nextPayer.setTextColor(ContextCompat.getColor( this.getContext(), R.color.colorFirst));
+        } else {
+            nextPayer.setText ( viewModel.getSecond().getName() + " zahlt!");
+            nextPayer.setTextColor( ContextCompat.getColor( this.getContext(), R.color.colorSecond));
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,6 +88,8 @@ public class AusgabenFragment extends Fragment implements DialogListener {
         this.recyclerFirst.setAdapter( paymentAdapterFirst );
         this.recyclerSecond.setAdapter( paymentAdapterSecond );
 
+        this.updateNextPayer();
+
         return this.fragView;
     }
 
@@ -93,6 +111,8 @@ public class AusgabenFragment extends Fragment implements DialogListener {
                     this.viewModel.getSecond().addPayment( paymentDialog.getExpense());
                     this.paymentAdapterSecond.updateData();
                 }
+
+                this.updateNextPayer ( );
             }
         }
     }

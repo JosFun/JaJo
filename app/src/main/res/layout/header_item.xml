@@ -5,15 +5,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/header_item_card"
     android:layout_marginBottom="4dp"
-    app:cardBackgroundColor="@color/colorAccent"
-    app:contentPadding="0dp">
+    app:cardBackgroundColor="@color/colorPrimary"
+    app:contentPadding="4dp"
+    android:elevation="25dp"
+    android:outlineProvider="paddedBounds">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:id="@+id/header_constraint"
-        android:background="@color/colorAccent">
+        android:background="@color/colorFirst">
 
         <TextView
             android:id="@+id/header_item_person"
@@ -23,6 +25,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:textSize="22sp"
             android:textStyle="bold"
+            android:textColor="@color/colorAccent"
             android:layout_margin="6dp"
             android:gravity="top"
             android:textAlignment="gravity"
@@ -36,6 +39,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:textSize="22sp"
             android:textStyle="bold"
+            android:textColor="@color/colorAccent"
             android:layout_margin="6dp"
             android:gravity="top"
             android:textAlignment="gravity"

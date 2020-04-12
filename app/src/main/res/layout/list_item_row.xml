@@ -5,14 +5,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/list_item_card"
     android:layout_margin="2dp"
-    app:cardBackgroundColor="@color/colorAccent"
+    app:cardBackgroundColor="@color/colorFirst"
     app:contentPadding="6dp">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:background="@color/colorWhite">
+        android:background="@color/colorPrimary">
 
         <TextView
             android:id="@+id/list_item_money"
@@ -22,6 +22,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:textColor="@color/colorAccent"
             android:layout_margin="4dp"
             android:gravity="top"
             android:textAlignment="gravity"
@@ -35,6 +36,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:textColor="@color/colorAccent"
             android:layout_margin="4dp"
             android:gravity="top"
             android:textAlignment="gravity"
@@ -47,6 +49,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/list_item_date"
             android:textSize="16sp"
+            android:textColor="@color/colorAccent"
             android:layout_margin="4dp"
             android:gravity="top"
             android:textAlignment="gravity"

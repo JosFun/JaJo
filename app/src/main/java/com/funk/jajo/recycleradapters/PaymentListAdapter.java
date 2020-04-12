@@ -96,9 +96,9 @@ public class PaymentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
             if ( listItem.card != null ) {
                 if ( this.person.getName().equals ( this.context.getString( R.string.first))) {
-                    listItem.card.setCardBackgroundColor(ContextCompat.getColor( this.context, R.color.colorPrimaryDark));
+                    listItem.card.setCardBackgroundColor(ContextCompat.getColor( this.context, R.color.colorFirst));
                 } else {
-                    listItem.card.setCardBackgroundColor(ContextCompat.getColor( this.context, R.color.colorAccent));
+                    listItem.card.setCardBackgroundColor(ContextCompat.getColor( this.context, R.color.colorSecond));
                 }
             }
         } else if ( vH instanceof HeaderItem ){
@@ -106,10 +106,10 @@ public class PaymentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             if ( headerItem.constraint != null && headerItem.card != null) {
                 if ( this.person.getName().equals( this.context.getString(R.string.first))) {
-                    headerItem.constraint.setBackgroundColor(ContextCompat.getColor( this.context, R.color.colorPrimaryDark));
-                    headerItem.card.setCardBackgroundColor(ContextCompat.getColor( this.context, R.color.colorPrimaryDark));
+                    headerItem.constraint.setBackgroundColor(ContextCompat.getColor( this.context, R.color.colorFirst));
+                    headerItem.card.setCardBackgroundColor(ContextCompat.getColor( this.context, R.color.colorAccent));
                 } else {
-                    headerItem.constraint.setBackgroundColor( ContextCompat.getColor( this.context, R.color.colorAccent));
+                    headerItem.constraint.setBackgroundColor( ContextCompat.getColor( this.context, R.color.colorSecond));
                     headerItem.card.setCardBackgroundColor(ContextCompat.getColor( this.context, R.color.colorAccent));
                 }
             }

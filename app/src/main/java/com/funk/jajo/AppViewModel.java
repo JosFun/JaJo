@@ -8,6 +8,11 @@ public class AppViewModel extends ViewModel {
 
     private AppBarActivity.FragmentType currentFragment;
 
+    /**
+     * Specifies what percentage of the overall sum the first person has to pay.
+     * */
+    private double shareRatio = 0.4;
+
     private Person first;
 
     private Person second;
@@ -31,4 +36,6 @@ public class AppViewModel extends ViewModel {
     public Person getSecond( ) { return this.second; }
 
     public Person getFirst( ) { return this.first; }
+
+    public double getShareRatio (){ return this.shareRatio; }
 }
