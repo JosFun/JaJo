@@ -60,7 +60,7 @@ public abstract class AppBarActivity extends AppCompatActivity {
     /**
      * Sets the text of the toolbar according to the current activity's id.
      * To be invoked by every non abstract sublass which is extending this class.
-     * @param activityId - the id of the activity we want to display the name of in the appBar
+     * @param type - the id of the activity we want to display the name of in the appBar
      */
     public void setToolBarText ( FragmentType type ) {
         if ( this.appBarPresent ) {
@@ -89,7 +89,7 @@ public abstract class AppBarActivity extends AppCompatActivity {
 
 
     /**
-     * Change Fragment from current fragment to the fragment specified.
+     * PaymentChange Fragment from current fragment to the fragment specified.
      * @param frame_layout_id The id of the layout the new fragement will be visualized on
      * @param destFragment The fragment we want to be shown from now on.
      * @param fragID The ID of the fragment we would like to visualize

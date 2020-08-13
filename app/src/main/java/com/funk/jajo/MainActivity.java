@@ -42,6 +42,7 @@ public class MainActivity extends AppBarActivity {
             onlineSecond = loadedData.getSecond();
         }
 
+        /* Look for existing offline data on the device.*/
         {
             SharedPreferences sP = this.getSharedPreferences(getString(R.string.PERSON_SHARED_PREF), MODE_PRIVATE);
             String loadKey1 = getString(R.string.PERSON_KEY) + FIRST_SUFFIX;
