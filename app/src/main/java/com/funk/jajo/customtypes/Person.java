@@ -109,16 +109,20 @@ public class Person implements Comparable<Person>{
         for ( Payment payment: p.payments ) {
             if ( !this.payments.contains( payment)) {
                 this.payments.add ( payment );
-                Collections.sort( this.payments, new Comparator<Payment>() {
-                    @Override
-                    public int compare(Payment o1, Payment o2) {
-                        return o1.compareTo(o2);
-                    }
-                });
+                this.sortByDate();
             }
         }
 
         return this;
+    }
+
+    public void sortByDate ( ) {
+        Collections.sort(this.payments, new Comparator<Payment>() {
+            @Override
+            public int compare(Payment o1, Payment o2) {
+                return o1.compareTo(o2);
+            }
+        });
     }
 
     public String getName( ) {

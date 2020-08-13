@@ -47,7 +47,7 @@ public class Payment implements Comparable<Payment> {
     public int compareTo(Payment o) {
         if ( o == null ) return 1;
 
-       else return this.calendar.compareTo( o.calendar );
+       else return o.calendar.compareTo(this.calendar);
     }
 
     /**

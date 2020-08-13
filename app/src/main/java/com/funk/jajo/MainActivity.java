@@ -75,6 +75,9 @@ public class MainActivity extends AppBarActivity {
             this.viewModel = ViewModelProviders.of ( this ).get( AppViewModel.class );
         }
 
+        p1.sortByDate();
+        p2.sortByDate();
+
         if ( p1 != null && p2 != null ) {
             this.viewModel.setFirst( p1 );
             this.viewModel.setSecond( p2 );
