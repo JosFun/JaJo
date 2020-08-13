@@ -16,9 +16,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.funk.jajo.R;
+import com.funk.jajo.customtypes.Action;
 import com.funk.jajo.customtypes.DialogListener;
 import com.funk.jajo.customtypes.Money;
 import com.funk.jajo.customtypes.Payment;
+import com.funk.jajo.customtypes.PaymentChange;
 import com.funk.jajo.customtypes.Person;
 
 import java.util.Calendar;
@@ -175,6 +177,10 @@ public class AddPaymentDialog extends DialogFragment {
      */
     public Payment getExpense ( ) {
         return new Payment( this.description, this.expenseAmount, this.expenseDate);
+    }
+
+    public PaymentChange getPaymentChange ( ) {
+        return new PaymentChange(Action.ADD, this.description, this.expenseAmount, this.expenseDate );
     }
 
     /**

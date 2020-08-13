@@ -1,14 +1,38 @@
 package com.funk.jajo.customtypes;
 
+import java.util.Calendar;
+
 /**
  * Represents a change, having been made the list of  payments of a {@link Person}.
  */
-public class PaymentChange {
+public class PaymentChange extends Change {
     /**
-     * The {@link Person}, the change is associated with.
+     * The {@link Person}, this {@link PaymentChange} is associated with.
      */
     private Person person;
 
-    private Action action;
+    /**
+     * The amount of {@link Money} associated with this {@link PaymentChange}.
+     * */
+    private Money amount;
+
+    /**
+     * The description associated with this {@link PaymentChange}.
+     */
+    private String description;
+
+    /**
+     * The date as an instance of {@Calendar} associated with this {@link PaymentChange}
+     */
+    private Calendar calendar;
+
+    public PaymentChange ( Action performedAction,  String newDescription, Money expenseAmount, Calendar date ) {
+        super ( performedAction);
+        this.description = newDescription;
+        this.amount = expenseAmount;
+        this.calendar = date;
+    }
+
+
 
 }
