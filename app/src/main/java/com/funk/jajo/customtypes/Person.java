@@ -125,6 +125,14 @@ public class Person implements Comparable<Person>{
         });
     }
 
+    /**
+     * This method is to be used if data is to be changed or deleted as long as editing
+     * isn't possible yet.
+     */
+    public void correct ( ) {
+
+    }
+
     public String getName( ) {
         return this.name;
     }
