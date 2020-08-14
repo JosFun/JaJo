@@ -6,6 +6,11 @@ import com.funk.jajo.customtypes.Person;
 
 public class AppViewModel extends ViewModel {
 
+    /**
+    * The name of the device, this app is running on.
+    */
+    private final String deviceName = android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL;
+
     private AppBarActivity.FragmentType currentFragment;
 
     /**
@@ -16,6 +21,11 @@ public class AppViewModel extends ViewModel {
     private Person first;
 
     private Person second;
+
+
+    public String getDeviceName ( ) {
+        return this.deviceName;
+    }
 
     public AppBarActivity.FragmentType getCurrentFragment ( ) {
         return this.currentFragment;

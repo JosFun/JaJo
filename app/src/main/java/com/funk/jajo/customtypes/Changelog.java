@@ -8,6 +8,13 @@ import java.util.Queue;
  * and
  */
 public class Changelog {
-    private Queue<PaymentChange> paymentChanges;
-    private Queue<ShoppingEntryChange> shoppingChanges;
+    /**
+     * The HostName of the device that uploaded this {@link Changelog}
+     */
+    private String originHost;
+
+    /**
+     * The Queue containing all the {@link Change}s that still need to be corrected.
+     */
+    private Queue<Change> changes;
 }
