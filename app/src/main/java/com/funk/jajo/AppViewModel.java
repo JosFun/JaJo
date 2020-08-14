@@ -2,6 +2,7 @@ package com.funk.jajo;
 
 import android.arch.lifecycle.ViewModel;
 
+import com.funk.jajo.customtypes.Changelog;
 import com.funk.jajo.customtypes.Person;
 
 public class AppViewModel extends ViewModel {
@@ -22,6 +23,11 @@ public class AppViewModel extends ViewModel {
 
     private Person second;
 
+    /**
+     * Represents all the changes that have been introduced on the local device but have not yet
+     * been applied on the remote device.
+     */
+    private Changelog localChanges;
 
     public String getDeviceName ( ) {
         return this.deviceName;

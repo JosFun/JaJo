@@ -180,7 +180,7 @@ public class AddPaymentDialog extends DialogFragment {
     }
 
     public PaymentChange getPaymentChange ( ) {
-        return new PaymentChange(Action.ADD, this.description, this.expenseAmount, this.expenseDate );
+        return new PaymentChange(Action.ADD, this.personSelection, this.description, this.expenseAmount, this.expenseDate );
     }
 
     /**
