@@ -38,6 +38,8 @@ public class Person implements Comparable<Person>{
     public void deletePayment ( Payment p ) {
         this.payments.remove ( p );
     }
+
+    public void deletePayment ( int position ) { this.payments.remove ( position );}
     /**
      * Get total sum of payments this {@link Person} has done.
      * @return The total sum of payments this {@link Person} has done.

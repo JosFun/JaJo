@@ -97,9 +97,9 @@ public class AusgabenFragment extends Fragment implements DialogListener {
 
         this.updateNextPayer();
 
-        /* Set up ItemTouchHelper in order to react to swipe events */
-        ItemTouchHelper.SimpleCallback swipeCallBack = new ItemTouchHelper.SimpleCallback(
-                0 , ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT ) {
+        /* Set up ItemTouchHelpers in order to react to swipe events */
+        ItemTouchHelper.SimpleCallback swipeCallBackFirst = new ItemTouchHelper.SimpleCallback(
+                0 , ItemTouchHelper.LEFT ) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
                 return false;
@@ -108,8 +108,22 @@ public class AusgabenFragment extends Fragment implements DialogListener {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int dir) {
                 Toast.makeText(AusgabenFragment.this.getActivity(), "Gelöscht", Toast.LENGTH_SHORT).show();
+
+                /* Get the position of the swiped ViewHolder, there is an offset of 1 because
+                of the HeaderItem */
+                int position = viewHolder.getAdapterPosition() - 1;
+                /* Delete the item from the viewHolder data */
+                AusgabenFragment.this.viewModel.getFirst().deletePayment( position );
+
+                AusgabenFragment.this.paymentAdapterFirst.updateData();
+
             }
 
+            /**
+             * Once a ListItem is started to being swiped, its color will turn into Red.
+             * @param viewHolder The ViewHolder being swiped
+             * @param actionState The Action being performed on the viewHolder
+             */
             @Override
             public void onSelectedChanged( RecyclerView.ViewHolder viewHolder, int actionState ) {
                 if ( viewHolder instanceof PaymentListAdapter.ListItem ) {
@@ -122,6 +136,13 @@ public class AusgabenFragment extends Fragment implements DialogListener {
                 }
             }
 
+            /**
+             * This method is being invoked after the onSwiped method is finished.
+             * It will change the color of the background of the viewHolder, so that if the swipe
+             * has not been concluded, it will change its color back to its original color.
+             * @param recycler The recycler this ItemTouchHelper is being attached to.
+             * @param viewHolder The viewHolder that has been selected.
+             */
             @Override
             public void clearView ( RecyclerView recycler, RecyclerView.ViewHolder viewHolder ) {
                 if ( viewHolder instanceof PaymentListAdapter.ListItem ) {
@@ -131,8 +152,63 @@ public class AusgabenFragment extends Fragment implements DialogListener {
             }
         };
 
-        ItemTouchHelper swipeHelperFirst = new ItemTouchHelper( swipeCallBack );
-        ItemTouchHelper swipeHelperSecond = new ItemTouchHelper ( swipeCallBack );
+        /* Set up ItemTouchHelpers in order to react to swipe events */
+        ItemTouchHelper.SimpleCallback swipeCallBackSecond = new ItemTouchHelper.SimpleCallback(
+                0 , ItemTouchHelper.RIGHT ) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int dir) {
+                Toast.makeText(AusgabenFragment.this.getActivity(), "Gelöscht", Toast.LENGTH_SHORT).show();
+
+                /* Get the position of the swiped ViewHolder, there is an offset of 1 because
+                of the HeaderItem */
+                int position = viewHolder.getAdapterPosition() - 1;
+                /* Delete the item from the viewHolder data */
+                AusgabenFragment.this.viewModel.getSecond().deletePayment( position );
+
+                AusgabenFragment.this.paymentAdapterSecond.updateData();
+
+            }
+
+            /**
+             * Once a ListItem is started to being swiped, its color will turn into Red.
+             * @param viewHolder The ViewHolder being swiped
+             * @param actionState The Action being performed on the viewHolder
+             */
+            @Override
+            public void onSelectedChanged( RecyclerView.ViewHolder viewHolder, int actionState ) {
+                if ( viewHolder instanceof PaymentListAdapter.ListItem ) {
+                    if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                        PaymentListAdapter.ListItem item = (PaymentListAdapter.ListItem) viewHolder;
+                        if (item.currentColor == item.originalColor) {
+                            item.card.setCardBackgroundColor(Color.RED);
+                        }
+                    }
+                }
+            }
+
+            /**
+             * This method is being invoked after the onSwiped method is finished.
+             * It will change the color of the background of the viewHolder, so that if the swipe
+             * has not been concluded, it will change its color back to its original color.
+             * @param recycler The recycler this ItemTouchHelper is being attached to.
+             * @param viewHolder The viewHolder that has been selected.
+             */
+            @Override
+            public void clearView ( RecyclerView recycler, RecyclerView.ViewHolder viewHolder ) {
+                if ( viewHolder instanceof PaymentListAdapter.ListItem ) {
+                    PaymentListAdapter.ListItem item = (PaymentListAdapter.ListItem) viewHolder;
+                    item.card.setCardBackgroundColor(item.originalColor);
+                }
+            }
+        };
+
+        ItemTouchHelper swipeHelperFirst = new ItemTouchHelper( swipeCallBackFirst );
+        ItemTouchHelper swipeHelperSecond = new ItemTouchHelper ( swipeCallBackSecond );
         swipeHelperFirst.attachToRecyclerView(recyclerFirst);
         swipeHelperSecond.attachToRecyclerView(recyclerSecond);
 
