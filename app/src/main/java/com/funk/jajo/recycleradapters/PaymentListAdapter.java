@@ -1,6 +1,7 @@
 package com.funk.jajo.recycleradapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.preference.PreferenceActivity;
 import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
@@ -8,7 +9,9 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -97,8 +100,14 @@ public class PaymentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             if ( listItem.card != null ) {
                 if ( this.person.getName().equals ( this.context.getString( R.string.first))) {
                     listItem.card.setCardBackgroundColor(ContextCompat.getColor( this.context, R.color.colorFirst));
+                    listItem.originalColor = ContextCompat.getColor( this.context, R.color.colorFirst);
+                    listItem.currentColor = listItem.originalColor;
+
                 } else {
                     listItem.card.setCardBackgroundColor(ContextCompat.getColor( this.context, R.color.colorSecond));
+                    listItem.originalColor = ContextCompat.getColor( this.context, R.color.colorSecond);
+                    listItem.currentColor = listItem.originalColor;
+
                 }
             }
         } else if ( vH instanceof HeaderItem ){
@@ -153,10 +162,13 @@ public class PaymentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public static class ListItem extends RecyclerView.ViewHolder {
 
-        protected CardView card;
-        protected TextView description;
-        protected TextView money;
-        protected TextView date;
+        public CardView card;
+        public TextView description;
+        public TextView money;
+        public TextView date;
+
+        public int currentColor;
+        public int originalColor;
 
         public ListItem(@NonNull View itemView) {
             super(itemView);
@@ -164,6 +176,7 @@ public class PaymentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             this.card = itemView.findViewById(R.id.list_item_card);
             this.money = itemView.findViewById( R.id.list_item_money );
             this.date = itemView.findViewById( R.id.list_item_date );
+
         }
     }
 
@@ -173,6 +186,7 @@ public class PaymentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         protected TextView name;
         protected TextView money;
         protected ConstraintLayout constraint;
+
         public HeaderItem(@NonNull View itemView) {
             super(itemView);
             this.card = itemView.findViewById(R.id.header_item_card);
@@ -180,5 +194,7 @@ public class PaymentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             this.money = itemView.findViewById(R.id.header_item_sum);
             this.constraint = itemView.findViewById(R.id.header_constraint);
         }
+
+
     }
 }

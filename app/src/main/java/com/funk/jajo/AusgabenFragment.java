@@ -2,6 +2,7 @@ package com.funk.jajo;
 
 import android.app.ListActivity;
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -98,16 +99,35 @@ public class AusgabenFragment extends Fragment implements DialogListener {
 
         /* Set up ItemTouchHelper in order to react to swipe events */
         ItemTouchHelper.SimpleCallback swipeCallBack = new ItemTouchHelper.SimpleCallback(
-                0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT ) {
+                0 , ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT ) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
-                Toast.makeText(AusgabenFragment.this.getActivity(), "on Move", Toast.LENGTH_SHORT).show();
                 return false;
             }
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int dir) {
                 Toast.makeText(AusgabenFragment.this.getActivity(), "Gelöscht", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSelectedChanged( RecyclerView.ViewHolder viewHolder, int actionState ) {
+                if ( viewHolder instanceof PaymentListAdapter.ListItem ) {
+                    if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                        PaymentListAdapter.ListItem item = (PaymentListAdapter.ListItem) viewHolder;
+                        if (item.currentColor == item.originalColor) {
+                            item.card.setCardBackgroundColor(Color.RED);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void clearView ( RecyclerView recycler, RecyclerView.ViewHolder viewHolder ) {
+                if ( viewHolder instanceof PaymentListAdapter.ListItem ) {
+                    PaymentListAdapter.ListItem item = (PaymentListAdapter.ListItem) viewHolder;
+                    item.card.setCardBackgroundColor(item.originalColor);
+                }
             }
         };
 
