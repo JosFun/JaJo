@@ -1,197 +1,74 @@
 package com.funk.jajo.customtypes;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.widget.Toast;
+import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPFile;
-import org.apache.commons.net.ftp.FTPReply;
+import java.io.File;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-
+/**
+ * Stores a {@link ChangelogStorable} on the phone persistently.
+ */
 public class ChangelogStorer {
-    private static final String HOSTNAME = "fritz.box";
-    private static final String USERNAME = "JosFun";
-    private static final String PASSWORD = "Tacomia77!?";
-    private static final String DIR_NAME = "JaJo";
-    private static final String FILE_NAME = "jajo_changelog.data";
-
-    private FTPClient ftpClient;
-    private ChangelogStorable storable;
-    private Context context;
     /**
-     * Check whether or not we have an existing internet connection on the phone
-     * @param context - The context of the Activity the check is to be made for.
-     * @return whether or not an internet connection exists
+     * The key being used to load {@link ChangelogStorable}s stored on the device from.
      */
-    public static final boolean checkForInternetConnection ( Context context ) {
+    private String loadKey = null;
+    /**
+     * The {@link SharedPreferences} using which {@link ChangelogStorable}s have been stored on the device and
+     * can now be loaded from.
+     */
+    private SharedPreferences sP = null;
 
-        ConnectivityManager cm =
-                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    /**
+     * Create a new instance of {@link ChangelogStorer} in order to store a new {@link Person} on the device.
+     * @param c - The {@link ChangelogStorer} that is to be stored on the phone.
+     * @param key - The key as a {@link String} under which the {@link Person } is to be put on the device.
+     * @param sP - The {@link SharedPreferences} being used to store the {@link Person} on the device.
+     */
+    public ChangelogStorer( ChangelogStorable c, String key, SharedPreferences sP ) {
 
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
-        return isConnected;
-    }
+        String logFile = new Gson().toJson( c );
 
-    private void uploadStorable ( ) {
-        String jsonFile = new Gson().toJson( storable );
-
-        try {
-            this.ftpClient.connect ( HOSTNAME );
-            int reply = ftpClient.getReplyCode();
-
-            if (!FTPReply.isPositiveCompletion(reply)){
-                Toast.makeText(this.context, "Could not sync with the server.", Toast.LENGTH_SHORT).show();
-            }
-
-            this.ftpClient.login ( USERNAME, PASSWORD );
-            this.ftpClient.enterLocalPassiveMode();
-            this.ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-
-            FTPFile[] files = this.ftpClient.listDirectories();
-            if ( !directoryExists( files, DIR_NAME )) {
-                this.ftpClient.makeDirectory( DIR_NAME );
-            }
-
-            this.ftpClient.changeWorkingDirectory( DIR_NAME );
-
-            InputStream input  = new ByteArrayInputStream( jsonFile.getBytes());
-            this.ftpClient.deleteFile(FILE_NAME);
-
-            this.ftpClient.storeFile( FILE_NAME, input);
-            input.close();
-
-            this.ftpClient.logout();
-            this.ftpClient.disconnect();
-
-        } catch ( Exception e ) {
-            e.printStackTrace();
-            Toast.makeText(this.context, "Could not sync with the server.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private String downloadJSON ( ) {
-        String jsonFile = "";
-        try {
-            this.ftpClient.connect( HOSTNAME );
-            int reply = ftpClient.getReplyCode();
-
-            if (!FTPReply.isPositiveCompletion(reply)){
-                Toast.makeText(this.context, "Could not sync with the server.", Toast.LENGTH_SHORT).show();
-            }
-
-            this.ftpClient.login ( USERNAME, PASSWORD );
-            this.ftpClient.enterLocalPassiveMode();
-            this.ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-
-            FTPFile[] files = this.ftpClient.listDirectories();
-            if ( !directoryExists( files, DIR_NAME )) {
-                return "";
-            }
-
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            this.ftpClient.changeWorkingDirectory( DIR_NAME );
-            this.ftpClient.retrieveFile( FILE_NAME, out);
-
-            jsonFile = out.toString();
-
-            this.ftpClient.logout();
-            this.ftpClient.disconnect();
-
-        } catch ( Exception e ) {
-            e.printStackTrace();
-            Toast.makeText(this.context, "Could not sync with the server.", Toast.LENGTH_SHORT).show();
-        }
-
-        return jsonFile;
+        SharedPreferences.Editor editor =   sP.edit();
+        editor.putString ( key, logFile );
+        editor.commit();
     }
 
     /**
-     * Test whether or not the specified directory name exists within the list of directories
-     * @param dirs - The list of {@link FTPFile}s, organized as an array.
-     * @param dirName  - The name of the {@link FTPFile} we want to search.
-     * @return whether or not the specified {@link String} is the name of a directory in the
-     *         list of {@link FTPFile}s
+     * Create a new instance of {@link ChangelogStorer} in order to load a {@link Person} from the
+     * {@link SharedPreferences} this {@link ChangelogStorer} has been created with.
+     * @param loadKey - The key under which the {@link Person } is to be loaded from.
+     * @param sP - The {@link SharedPreferences} the {@link Person} is to be loaded from.
      */
-    private boolean directoryExists ( FTPFile[] dirs, String dirName ) {
-        for ( FTPFile f: dirs ) {
-            if ( f.isDirectory() && f.getName().equals ( dirName)) return true;
-        }
-        return false;
+    public ChangelogStorer(String loadKey, SharedPreferences sP ) {
+        this.sP = sP;
+        this.loadKey = loadKey;
     }
 
+    /**
+     * Load a {@link ChangelogStorable} that has is stored inside the {@link SharedPreferences} of this {@link ChangelogStorer}
+     * @return
+     */
+    public ChangelogStorable loadChangelogStorable( ) {
+        if ( this.loadKey == null || this.sP == null ) return null;
 
-    public ChangelogStorer(ChangelogStorable storable, Context context ) {
-        this.ftpClient = new FTPClient();
-        this.storable = storable;
-        this.context = context;
+        String defaultValue = "NONE";
+        String changeLogFile = this.sP.getString( this.loadKey, defaultValue );
 
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ChangelogStorer.this.uploadStorable();
-            }
-        });
-        t.start();
-
-        try {
-            t.join();
-        } catch ( Exception e ) {
-            e.printStackTrace();
-        }
-    }
-
-    public ChangelogStorer(Context context ) {
-        this.ftpClient = new FTPClient();
-    }
-
-    public ChangelogStorable getStorable ( ) {
-        String storableString = "";
-        FTPRunnable r = new FTPRunnable();
-
-        Thread t = new Thread(r);
-        t.start();
-        try {
-            t.join();
-            storableString = r.getJsonFile();
-        } catch ( Exception e ) {
-            e.printStackTrace();
-        }
-
-        if ( storableString.equals( "" )) {
-            return null;
-        } else {
-            ChangelogStorable storable = null;
+        if ( !changeLogFile.equals ( defaultValue )) {
+            ChangelogStorable c = null;
             try {
-                storable = new Gson().fromJson ( storableString,
+                c = new Gson().fromJson ( changeLogFile,
                         new TypeToken<ChangelogStorable>() {}.getType());
             } catch ( Exception e ) {
                 e.printStackTrace();
                 return null;
             }
-            return storable;
+            return c;
         }
 
-    }
-
-    public class FTPRunnable implements Runnable {
-
-        private String jsonFile;
-        @Override
-        public void run() {
-            this.jsonFile = ChangelogStorer.this.downloadJSON();
-        }
-
-        public String getJsonFile ( ) { return this.jsonFile; }
+        return null;
     }
 }

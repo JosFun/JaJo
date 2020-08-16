@@ -9,7 +9,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.funk.jajo.customtypes.Changelog;
 import com.funk.jajo.customtypes.ChangelogStorable;
+import com.funk.jajo.customtypes.FTPChangelogStorer;
 import com.funk.jajo.customtypes.FTPStorable;
 import com.funk.jajo.customtypes.FTPStorer;
 import com.funk.jajo.customtypes.Person;
@@ -85,6 +87,22 @@ public class MainActivity extends AppBarActivity {
 
     private void loadChangelogData ( ) {
         ChangelogStorable data = null;
+        /*
+            Check whether or not we can connect to the ftp server.
+        */
+        if ( FTPChangelogStorer.checkForInternetConnection( this.getApplicationContext())) {
+            FTPChangelogStorer storer = new FTPChangelogStorer( this.getApplicationContext());
+            data = storer.getStorable();
+        }
+
+        Changelog remoteChangelog;
+
+        /* If data is valid, try to get access to the remote device's changelog by passing the name
+        * of the local device to the Getter method of the data.*/
+        if ( data != null ) {
+            remoteChangelog = data.getRemoteChangelog( this.viewModel.getDeviceName());
+        }
+
 
 
     }
