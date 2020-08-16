@@ -104,6 +104,9 @@ public class AusgabenFragment extends Fragment implements DialogListener {
             if ( this.viewModel != null ) {
                 AddPaymentDialog paymentDialog = ( AddPaymentDialog ) dialog;
 
+                /*
+                 * Add the dialog's info to a the payment list of the associated person
+                 */
                 if ( paymentDialog.getSelectedPerson().equals( this.viewModel.getFirst().getName())) {
                     this.viewModel.getFirst().addPayment( paymentDialog.getExpense());
                     this.paymentAdapterFirst.updateData();
@@ -111,6 +114,12 @@ public class AusgabenFragment extends Fragment implements DialogListener {
                     this.viewModel.getSecond().addPayment( paymentDialog.getExpense());
                     this.paymentAdapterSecond.updateData();
                 }
+
+                /*
+                 * Add a changelog entry
+                 */
+
+
 
                 this.updateNextPayer ( );
             }

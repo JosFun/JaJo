@@ -29,6 +29,12 @@ public class AppViewModel extends ViewModel {
      */
     private Changelog localChanges;
 
+    /**
+     * Represents all the changes that have been introduced on the remote device but have not yet
+     * been applied on this local device.
+     */
+    private Changelog remoteChanges;
+
     public String getDeviceName ( ) {
         return this.deviceName;
     }

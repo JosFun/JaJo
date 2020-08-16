@@ -134,7 +134,7 @@ public class MainActivity extends AppBarActivity {
         this.viewModel = ViewModelProviders.of ( this ).get( AppViewModel.class );
         this.viewModel.setCurrentFragment( FragmentType.AUSGABEN );
 
-        /* Try to load existing persons from the phone's storage */
+        /* Try to load existing persons from both the phone's storage and the ftp server */
         this.loadData();
 
         if ( this.viewModel.getFirst() == null && this.viewModel.getSecond() == null ) {
