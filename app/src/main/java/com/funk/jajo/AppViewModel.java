@@ -51,6 +51,10 @@ public class AppViewModel extends ViewModel {
         this.first = first;
     }
 
+    public void setLocalChanges ( Changelog localChanges ) { this.localChanges = localChanges; }
+
+    public void setRemoteChanges ( Changelog remoteChanges ) { this.remoteChanges = remoteChanges; }
+
     public void setCurrentFragment ( AppBarActivity.FragmentType type ) {
         this.currentFragment = type;
     }
@@ -58,6 +62,10 @@ public class AppViewModel extends ViewModel {
     public Person getSecond( ) { return this.second; }
 
     public Person getFirst( ) { return this.first; }
+
+    public Changelog getLocalChanges ( ) { return this.localChanges;}
+
+    public Changelog getRemoteChanges ( ) { return this.remoteChanges; }
 
     public double getShareRatio (){ return this.shareRatio; }
 }

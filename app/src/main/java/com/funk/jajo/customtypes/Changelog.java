@@ -21,10 +21,15 @@ public class Changelog {
 
     public Changelog ( String origin ) {
         this.originHost = origin;
+        this.changes = new LinkedList<Change>();
     }
 
     public String getOriginHost ( ) {
         return this.originHost;
+    }
+
+    public void addChange ( Change ch ) {
+        this.changes.add( ch );
     }
 
     public Queue<Change> getChanges ( ) {

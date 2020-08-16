@@ -11,11 +11,14 @@ import android.view.MenuItem;
 
 import com.funk.jajo.customtypes.Changelog;
 import com.funk.jajo.customtypes.ChangelogStorable;
+import com.funk.jajo.customtypes.ChangelogStorer;
 import com.funk.jajo.customtypes.FTPChangelogStorer;
 import com.funk.jajo.customtypes.FTPStorable;
 import com.funk.jajo.customtypes.FTPStorer;
 import com.funk.jajo.customtypes.Person;
 import com.funk.jajo.customtypes.PersonStorer;
+
+import java.security.InvalidParameterException;
 
 public class MainActivity extends AppBarActivity {
     private static final String FIRST_SUFFIX = "_FIRST";
@@ -85,6 +88,11 @@ public class MainActivity extends AppBarActivity {
         }
     }
 
+    /**
+     * Load both the remote device's changelog that is being stored online and the local device's
+     * changelog being stored locally
+     * @return the remote device's changelog data
+     */
     private void loadChangelogData ( ) {
         ChangelogStorable data = null;
         /*
@@ -95,7 +103,8 @@ public class MainActivity extends AppBarActivity {
             data = storer.getStorable();
         }
 
-        Changelog remoteChangelog;
+        Changelog localChangelog = null;
+        Changelog remoteChangelog = null;
 
         /* If data is valid, try to get access to the remote device's changelog by passing the name
         * of the local device to the Getter method of the data.*/
@@ -103,11 +112,41 @@ public class MainActivity extends AppBarActivity {
             remoteChangelog = data.getRemoteChangelog( this.viewModel.getDeviceName());
         }
 
+        /*
+        * Load a potentially existing version of the local changelog from the device's storage */
+        {
+            SharedPreferences sP = this.getSharedPreferences( getString ( R.string.CHANGELOG_SHARED_PREF), MODE_PRIVATE );
+            String loadKey = getString(R.string.CHANGELOG_KEY);
 
+            /* Instantiate a new ChangelogStorer that works with the appropriate loadKey and
+            * SharedPreferences */
+            ChangelogStorer cStorer = new ChangelogStorer( loadKey, sP );
 
+            /* Get the ChangelogStorable from the device's storage. */
+            ChangelogStorable offlineStorable = cStorer.loadChangelogStorable();
+
+            try {
+                localChangelog = offlineStorable.getLocalChangelog( this.viewModel.getDeviceName());
+            } catch ( InvalidParameterException e ) {
+                e.printStackTrace();
+                localChangelog = new Changelog( this.viewModel.getDeviceName());
+            }
+
+            if ( localChangelog == null ) {
+                localChangelog = new Changelog( ( this.viewModel.getDeviceName()));
+            }
+        }
+
+        /* Set up the local Changelog and the remoteChangelog within the app's viewModel. */
+        this.viewModel.setLocalChanges( localChangelog );
+        this.viewModel.setRemoteChanges( remoteChangelog );
     }
 
     private void storeData( ) {
+        /*
+            First of all, load the remote data from the server
+        */
+        this.loadData();
         if ( this.viewModel != null && this.viewModel.getSecond() != null && this.viewModel.getSecond() != null ) {
             {
                 /* First: store it locally */
@@ -122,6 +161,31 @@ public class MainActivity extends AppBarActivity {
                 FTPStorer storer = new FTPStorer( new FTPStorable( this.viewModel.getFirst(), this.viewModel.getSecond()), this.getApplicationContext());
             }
         }
+
+    }
+
+    /**
+     * Store the current ChangelogData both online and locally
+     */
+    private void storeChangelogData ( ) {
+
+        if ( this.viewModel != null && this.viewModel.getLocalChanges() != null
+                && this.viewModel.getRemoteChanges() != null ) {
+            ChangelogStorable toBeStored = new ChangelogStorable(
+                    this.viewModel.getLocalChanges(), this.viewModel.getRemoteChanges() );
+
+            /* First: Store it locally */
+            SharedPreferences sP = this.getSharedPreferences(
+                    getString ( R.string.CHANGELOG_SHARED_PREF), MODE_PRIVATE);
+            ChangelogStorer cStorer = new ChangelogStorer( toBeStored,
+                    getString(R.string.CHANGELOG_KEY), sP );
+
+            /* Afterwards: Store it on the ftp server */
+            {
+                FTPChangelogStorer storer = new FTPChangelogStorer( toBeStored, this.getApplicationContext());
+            }
+        }
+
 
     }
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

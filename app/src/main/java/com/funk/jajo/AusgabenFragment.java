@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.funk.jajo.customtypes.Change;
+import com.funk.jajo.customtypes.Changelog;
 import com.funk.jajo.customtypes.DialogListener;
 import com.funk.jajo.customtypes.Person;
 import com.funk.jajo.dialogs.AddPaymentDialog;
@@ -116,10 +118,14 @@ public class AusgabenFragment extends Fragment implements DialogListener {
                 }
 
                 /*
-                 * Add a changelog entry
+                 * Add a changelog entry in the changelog of the local device.
                  */
+                Change change = paymentDialog.getPaymentChange();
+                Changelog localChanges = this.viewModel.getLocalChanges();
 
-
+                if ( change != null && localChanges != null ) {
+                    localChanges.addChange( change );
+                }
 
                 this.updateNextPayer ( );
             }
