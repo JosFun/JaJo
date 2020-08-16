@@ -29,6 +29,9 @@ public class Changelog {
     }
 
     public void addChange ( Change ch ) {
+        if ( this.changes == null ) {
+            this.changes = new LinkedList<>();
+        }
         this.changes.add( ch );
     }
 

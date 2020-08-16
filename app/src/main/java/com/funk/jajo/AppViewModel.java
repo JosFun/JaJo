@@ -2,6 +2,7 @@ package com.funk.jajo;
 
 import android.arch.lifecycle.ViewModel;
 
+import com.funk.jajo.customtypes.Change;
 import com.funk.jajo.customtypes.Changelog;
 import com.funk.jajo.customtypes.Person;
 
@@ -54,6 +55,14 @@ public class AppViewModel extends ViewModel {
     public void setLocalChanges ( Changelog localChanges ) { this.localChanges = localChanges; }
 
     public void setRemoteChanges ( Changelog remoteChanges ) { this.remoteChanges = remoteChanges; }
+
+    public void addLocalChange ( Change localChange ) {
+        if ( this.localChanges == null ) {
+            this.localChanges = new Changelog( this.deviceName );
+        }
+        this.localChanges.addChange( localChange );
+
+    }
 
     public void setCurrentFragment ( AppBarActivity.FragmentType type ) {
         this.currentFragment = type;

@@ -32,6 +32,8 @@ public class Payment implements Comparable<Payment> {
 
     public Date getDate ( ) { return this.calendar.getTime ( ); }
 
+    public Calendar getCalendar ( ) { return this.calendar; }
+
     public String getDateString ( ) {
         SimpleDateFormat df = new SimpleDateFormat( "dd.MM");
         df.setTimeZone(TimeZone.getDefault());

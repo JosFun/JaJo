@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.funk.jajo.customtypes.Change;
 import com.funk.jajo.customtypes.Changelog;
 import com.funk.jajo.customtypes.DialogListener;
+import com.funk.jajo.customtypes.Payment;
+import com.funk.jajo.customtypes.PaymentChange;
 import com.funk.jajo.customtypes.Person;
 import com.funk.jajo.dialogs.AddPaymentDialog;
 import com.funk.jajo.recycleradapters.PaymentListAdapter;
@@ -112,8 +114,18 @@ public class AusgabenFragment extends Fragment implements DialogListener {
                 /* Get the position of the swiped ViewHolder, there is an offset of 1 because
                 of the HeaderItem */
                 int position = viewHolder.getAdapterPosition() - 1;
+
+                Payment toBeDeleted = AusgabenFragment.this.viewModel.getFirst().
+                        getPayments().get ( position);
+
                 /* Delete the item from the viewHolder data */
                 AusgabenFragment.this.viewModel.getFirst().deletePayment( position );
+
+                PaymentChange deletion = new PaymentChange(
+                        AusgabenFragment.this.viewModel.getFirst().getName(), toBeDeleted);
+
+                /* Add the deletion change to the Changelog */
+                AusgabenFragment.this.viewModel.addLocalChange( deletion );
 
                 /* QuickFix: Define new instances of the adapter, since otherwise
                 notifyDataSetChanged misbehaves for some reason*/
@@ -174,8 +186,18 @@ public class AusgabenFragment extends Fragment implements DialogListener {
                 /* Get the position of the swiped ViewHolder, there is an offset of 1 because
                 of the HeaderItem */
                 int position = viewHolder.getAdapterPosition() - 1;
+
+                Payment toBeDeleted = AusgabenFragment.this.viewModel.getSecond().
+                        getPayments().get ( position);
+
                 /* Delete the item from the viewHolder data */
                 AusgabenFragment.this.viewModel.getSecond().deletePayment( position );
+
+                PaymentChange deletion = new PaymentChange(
+                        AusgabenFragment.this.viewModel.getSecond().getName(), toBeDeleted);
+
+                /* Add the deletion change to the Changelog */
+                AusgabenFragment.this.viewModel.addLocalChange( deletion );
 
                  /* QuickFix: Define new instances of the adapter, since otherwise
                 notifyDataSetChanged misbehaves for some reason*/
