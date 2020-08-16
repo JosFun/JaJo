@@ -152,9 +152,11 @@ public class PaymentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @UiThread
     public void updateData ( ) {
         if ( this.dateFilteringActive ) {
-            this.selectedPayments = new ArrayList<>( person.getPayments( this.start, this.end ) );
+            this.selectedPayments.clear();
+            this.selectedPayments.addAll ( new ArrayList<>( person.getPayments( this.start, this.end ) ));
         } else {
-            this.selectedPayments = new ArrayList<>( person.getPayments() );
+            this.selectedPayments.clear();
+            this.selectedPayments.addAll ( new ArrayList<>( person.getPayments() ));
         }
 
         this.notifyDataSetChanged();

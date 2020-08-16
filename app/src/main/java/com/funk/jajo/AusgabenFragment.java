@@ -115,7 +115,14 @@ public class AusgabenFragment extends Fragment implements DialogListener {
                 /* Delete the item from the viewHolder data */
                 AusgabenFragment.this.viewModel.getFirst().deletePayment( position );
 
-                AusgabenFragment.this.paymentAdapterFirst.updateData();
+                /* QuickFix: Define new instances of the adapter, since otherwise
+                notifyDataSetChanged misbehaves for some reason*/
+                AusgabenFragment.this.paymentAdapterFirst = new PaymentListAdapter(
+                        AusgabenFragment.this.viewModel.getFirst(), AusgabenFragment.this.getContext() );
+
+                AusgabenFragment.this.recyclerFirst.setAdapter( AusgabenFragment.this.paymentAdapterFirst);
+
+                AusgabenFragment.this.updateNextPayer();
 
             }
 
@@ -170,8 +177,14 @@ public class AusgabenFragment extends Fragment implements DialogListener {
                 /* Delete the item from the viewHolder data */
                 AusgabenFragment.this.viewModel.getSecond().deletePayment( position );
 
-                AusgabenFragment.this.paymentAdapterSecond.updateData();
+                 /* QuickFix: Define new instances of the adapter, since otherwise
+                notifyDataSetChanged misbehaves for some reason*/
+                AusgabenFragment.this.paymentAdapterSecond = new PaymentListAdapter(
+                        AusgabenFragment.this.viewModel.getSecond(), AusgabenFragment.this.getContext());
 
+                AusgabenFragment.this.recyclerSecond.setAdapter ( AusgabenFragment.this.paymentAdapterSecond);
+
+                AusgabenFragment.this.updateNextPayer();
             }
 
             /**
