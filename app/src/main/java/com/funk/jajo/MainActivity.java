@@ -86,7 +86,7 @@ public class MainActivity extends AppBarActivity {
     private void loadChangelogData ( ) {
         ChangelogStorable data = null;
 
-        
+
     }
 
     private void storeData( ) {
