@@ -1,18 +1,22 @@
 package com.funk.jajo;
 
+import android.app.ListActivity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.funk.jajo.customtypes.Change;
 import com.funk.jajo.customtypes.Changelog;
@@ -91,6 +95,26 @@ public class AusgabenFragment extends Fragment implements DialogListener {
         this.recyclerSecond.setAdapter( paymentAdapterSecond );
 
         this.updateNextPayer();
+
+        /* Set up ItemTouchHelper in order to react to swipe events */
+        ItemTouchHelper.SimpleCallback swipeCallBack = new ItemTouchHelper.SimpleCallback(
+                0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT ) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                Toast.makeText(AusgabenFragment.this.getActivity(), "on Move", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int dir) {
+                Toast.makeText(AusgabenFragment.this.getActivity(), "Gelöscht", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        ItemTouchHelper swipeHelperFirst = new ItemTouchHelper( swipeCallBack );
+        ItemTouchHelper swipeHelperSecond = new ItemTouchHelper ( swipeCallBack );
+        swipeHelperFirst.attachToRecyclerView(recyclerFirst);
+        swipeHelperSecond.attachToRecyclerView(recyclerSecond);
 
         return this.fragView;
     }
