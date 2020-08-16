@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.funk.jajo.customtypes.ChangelogStorable;
 import com.funk.jajo.customtypes.FTPStorable;
 import com.funk.jajo.customtypes.FTPStorer;
 import com.funk.jajo.customtypes.Person;
@@ -80,6 +81,12 @@ public class MainActivity extends AppBarActivity {
             this.viewModel.setFirst( p1 );
             this.viewModel.setSecond( p2 );
         }
+    }
+
+    private void loadChangelogData ( ) {
+        ChangelogStorable data = null;
+
+        
     }
 
     private void storeData( ) {

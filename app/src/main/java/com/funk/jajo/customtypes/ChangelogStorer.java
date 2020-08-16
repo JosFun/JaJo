@@ -22,7 +22,7 @@ public class ChangelogStorer {
     private static final String USERNAME = "JosFun";
     private static final String PASSWORD = "Tacomia77!?";
     private static final String DIR_NAME = "JaJo";
-    private static final String FILE_NAME = "jajo.data";
+    private static final String FILE_NAME = "jajo_changelog.data";
 
     private FTPClient ftpClient;
     private ChangelogStorable storable;

@@ -12,4 +12,6 @@
     <string name="PERSON_SHARED_PREF">Person_Shared_Pref</string>
     <string name="PERSON_KEY">Person_Key</string>
 
+    <string name="CHANGELOG_KEY">Changelog_Key</string>
+
 </resources>
