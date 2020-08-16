@@ -142,6 +142,10 @@ public class PaymentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @UiThread
     public void updateData ( ) {
+
+        /* Sort the person's payments by date before displaying them. */
+        person.sortByDate();
+
         if ( this.dateFilteringActive ) {
             this.selectedPayments = new ArrayList<>( person.getPayments( this.start, this.end ) );
         } else {
