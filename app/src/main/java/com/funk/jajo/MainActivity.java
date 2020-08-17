@@ -159,6 +159,10 @@ public class MainActivity extends AppBarActivity {
             remoteChangelog = data.getRemoteChangelog( this.viewModel.getDeviceName());
         }
 
+        if ( remoteChangelog == null ) {
+            remoteChangelog = new Changelog ( this.viewModel.getDeviceName() );
+        }
+
         /*
         * Load a potentially existing version of the local changelog from the device's storage */
         {
@@ -177,6 +181,9 @@ public class MainActivity extends AppBarActivity {
             } catch ( InvalidParameterException e ) {
                 e.printStackTrace();
                 localChangelog = new Changelog( this.viewModel.getDeviceName());
+            } catch ( NullPointerException n ) {
+                n.printStackTrace();
+                localChangelog = new Changelog( this.viewModel.getDeviceName());
             }
 
             if ( localChangelog == null ) {
@@ -190,10 +197,6 @@ public class MainActivity extends AppBarActivity {
     }
 
     private void storeData( ) {
-        /*
-            First of all, load the remote data from the server before overwriting it.
-        */
-        this.loadData();
 
         /* Then, store the persons on the device locally.*/
         if ( this.viewModel != null && this.viewModel.getSecond() != null && this.viewModel.getSecond() != null ) {

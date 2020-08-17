@@ -22,14 +22,14 @@ public class ChangelogStorable {
      * @return The remote device's changelog
      * @throws InvalidParameterException
      */
-    public Changelog getRemoteChangelog(String deviceName) throws InvalidParameterException {
+    public Changelog getRemoteChangelog(String deviceName) {
         if (!this.firstChangelog.getOriginHost().equals(deviceName) &&
                 this.secondChangelog.getOriginHost().equals(deviceName)) {
             return this.firstChangelog;
         } else if (!this.secondChangelog.getOriginHost().equals(deviceName) &&
                 this.firstChangelog.getOriginHost().equals(deviceName)) {
             return this.secondChangelog;
-        } else throw new InvalidParameterException();
+        } else return null;
     }
 
     /**
@@ -39,13 +39,13 @@ public class ChangelogStorable {
      * @return The local device's changelog
      * @throws InvalidParameterException
      */
-    public Changelog getLocalChangelog(String deviceName) throws InvalidParameterException {
+    public Changelog getLocalChangelog(String deviceName) {
         if (this.firstChangelog.getOriginHost().equals(deviceName) &&
                 !this.secondChangelog.getOriginHost().equals(deviceName)) {
             return this.firstChangelog;
         } else if (this.secondChangelog.getOriginHost().equals(deviceName) &&
                 this.firstChangelog.getOriginHost().equals(deviceName)) {
             return this.secondChangelog;
-        } else throw new InvalidParameterException();
+        } else return null;
     }
 }
