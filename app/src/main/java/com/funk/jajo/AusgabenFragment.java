@@ -1,21 +1,21 @@
 package com.funk.jajo;
 
-import android.app.ListActivity;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import androidx.annotation.NonNull;
+
+import com.funk.jajo.Messaging.MessageSender;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,16 +28,11 @@ import com.funk.jajo.customtypes.Person;
 import com.funk.jajo.dialogs.AddPaymentDialog;
 import com.funk.jajo.recycleradapters.PaymentListAdapter;
 
-import org.apache.commons.net.PrintCommandListener;
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPConnectionClosedException;
-import org.apache.commons.net.ftp.FTPReply;
-import org.apache.commons.net.ftp.FTPSClient;
-
 public class AusgabenFragment extends Fragment implements DialogListener {
 
     private View fragView = null;
+
+    private MainActivity mainActivity = null;
 
     private AppViewModel viewModel = null;
 
@@ -69,6 +64,10 @@ public class AusgabenFragment extends Fragment implements DialogListener {
 
         if ( this.getActivity() != null ) {
             this.viewModel = ViewModelProviders.of ( this.getActivity()).get(AppViewModel.class);
+        }
+
+        if ( this.getActivity() instanceof MainActivity ) {
+            this.mainActivity = (MainActivity) this.getActivity();
         }
 
         FloatingActionButton addButton = this.fragView.findViewById(R.id.floating_action_expenses);
@@ -135,6 +134,9 @@ public class AusgabenFragment extends Fragment implements DialogListener {
                 AusgabenFragment.this.recyclerFirst.setAdapter( AusgabenFragment.this.paymentAdapterFirst);
 
                 AusgabenFragment.this.updateNextPayer();
+
+                /* Store updated data and notify remote device */
+                AusgabenFragment.this.processDeletion( deletion );
 
             }
 
@@ -204,9 +206,12 @@ public class AusgabenFragment extends Fragment implements DialogListener {
                 AusgabenFragment.this.paymentAdapterSecond = new PaymentListAdapter(
                         AusgabenFragment.this.viewModel.getSecond(), AusgabenFragment.this.getContext());
 
-                AusgabenFragment.this.recyclerSecond.setAdapter ( AusgabenFragment.this.paymentAdapterSecond);
+                AusgabenFragment.this.recyclerSecond.setAdapter ( AusgabenFragment.this.paymentAdapterSecond );
 
                 AusgabenFragment.this.updateNextPayer();
+
+                /* Store updated data and notify remote device */
+                AusgabenFragment.this.processDeletion( deletion );
             }
 
             /**
@@ -282,6 +287,19 @@ public class AusgabenFragment extends Fragment implements DialogListener {
                     localChanges.addChange( change );
                 }
 
+                /* Store the updated data both on the device and online */
+                if ( this.mainActivity != null ) {
+                    this.mainActivity.storeData();
+                }
+
+                /* Send a notification to the reomte device, so that it can react to it and update
+                * its data.*/
+                MessageSender sender = new MessageSender( this.getContext(),
+                        getString(R.string.FIRE_BASE_TITLE),
+                        getString(R.string.FIRE_BASE_MSG_ADD) +
+                                ((PaymentChange) change).getDescription() + ", " +
+                                ((PaymentChange) change).getMoneyAmount());
+
                 this.updateNextPayer ( );
             }
         }
@@ -290,5 +308,16 @@ public class AusgabenFragment extends Fragment implements DialogListener {
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
 
+    }
+
+    /**
+     * Processes a deletion. The Data both stored locally and online will be updated.
+     * Also, a notification on the remote device will be generated.
+     */
+    private void processDeletion ( PaymentChange change ) {
+        MessageSender sender = new MessageSender( this.getContext(), getString ( R.string.FIRE_BASE_TITLE )
+                ,"Zahlung von " + change.getPersonName() +
+                " gelöscht: " + change.getDescription() + ", " + change.getMoneyAmount().getValue()
+                );
     }
 }

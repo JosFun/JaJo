@@ -15,4 +15,9 @@
     <string name="CHANGELOG_SHARED_PREF">ChangelogStorable_Shared_Pref</string>
     <string name="CHANGELOG_KEY">ChangelogStorable_Key</string>
 
+    <string name="FIRE_BASE_TOPIC">NewFiles</string>
+
+    <string name="FIRE_BASE_TITLE">RelOrg Datenupdate</string>
+    <string name="FIRE_BASE_MSG_ADD">Neue Zahlung: </string>
+
 </resources>

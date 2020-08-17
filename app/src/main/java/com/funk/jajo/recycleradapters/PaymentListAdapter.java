@@ -1,17 +1,15 @@
 package com.funk.jajo.recycleradapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.preference.PreferenceActivity;
-import android.support.annotation.NonNull;
-import android.support.annotation.UiThread;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
-import android.view.DragEvent;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.UiThread;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -21,11 +19,8 @@ import com.funk.jajo.customtypes.Money;
 import com.funk.jajo.customtypes.Payment;
 import com.funk.jajo.customtypes.Person;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class PaymentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private static final int VIEW_TYPE_HEADER_ITEM = 0;

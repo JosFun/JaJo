@@ -1,10 +1,14 @@
 package com.funk.jajo;
 
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
+
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
+import androidx.annotation.NonNull;
+
+import com.funk.jajo.Messaging.MyFirebaseMessagingService;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,7 +37,7 @@ public class MainActivity extends AppBarActivity {
     private EinkaufslisteFragment listenFragment;
     private AppViewModel viewModel;
 
-    private void loadData( ) {
+    protected void loadData( ) {
         FTPStorable loadedData = null;
         /* First, check whether or not we can load already existing data from the internet.*/
         if (FTPStorer.checkForInternetConnection( this.getApplicationContext())) {
@@ -202,7 +206,7 @@ public class MainActivity extends AppBarActivity {
         this.viewModel.setRemoteChanges( remoteChangelog );
     }
 
-    private void storeData( ) {
+    protected void storeData( ) {
 
         /* Then, store the persons on the device locally.*/
         if ( this.viewModel != null && this.viewModel.getSecond() != null && this.viewModel.getSecond() != null ) {
@@ -301,6 +305,10 @@ public class MainActivity extends AppBarActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        /* Start the firebase messaging service. */
+        Intent serviceIntent = new Intent(this, MyFirebaseMessagingService.class);
+        startService(serviceIntent);
     }
 
     @Override

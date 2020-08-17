@@ -1,6 +1,6 @@
 package com.funk.jajo;
 
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModel;
 
 import com.funk.jajo.customtypes.Change;
 import com.funk.jajo.customtypes.Changelog;
