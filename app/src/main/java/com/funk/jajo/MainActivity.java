@@ -88,12 +88,11 @@ public class MainActivity extends AppBarActivity {
             p1 = offlineFirst;
             p2 = offlineSecond;
 
-            /* Download the changelog from the ftp server. */
-           FTPChangelogStorer ftpChangelog = new FTPChangelogStorer( this.getApplicationContext());
-           ChangelogStorable ftpStorable = ftpChangelog.getStorable();
+            /* Download both the remote and local changelog from the ftp server. */
+            this.loadChangelogData();
 
-           /* Take a look at the remote Changelog, since that is the relevant component */
-            Changelog remoteChangelog = ftpStorable.getRemoteChangelog( this.viewModel.getDeviceName());
+            /* Take a look at the remote changelog*/
+            Changelog remoteChangelog = this.viewModel.getRemoteChanges();
 
             /* Iterate through the remote changelog, inspect all the Changes and,
             depending on its type, insert the changes into the offline version of the person. */
