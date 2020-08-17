@@ -56,5 +56,13 @@ public class PaymentChange extends Change {
         this.calendar = toBeDeleted.getCalendar();
     }
 
+    /*
+     * Getters
+     */
+    public String getPersonName ( ) { return this.personName; }
+    public String getDescription ( ) { return this.description; }
+    public Money getMoneyAmount ( ) { return this.amount; }
+    public Calendar getCalendar ( ) { return this.calendar; }
+
 
 }

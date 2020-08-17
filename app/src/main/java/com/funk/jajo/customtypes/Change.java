@@ -12,4 +12,10 @@ public abstract class Change {
     public Change ( Action performedAction ) {
         this.action = performedAction;
     }
+
+    /**
+     * Get access to the {@link Action} having been performed in this {@link Change}.
+     * @return The {@link Action} having been performed
+     */
+    public Action getAction ( ) { return this.action; }
 }

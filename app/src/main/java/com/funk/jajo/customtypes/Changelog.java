@@ -1,8 +1,11 @@
 package com.funk.jajo.customtypes;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 /**
  * Represents all the changes that have been applied to the online version of {@link FTPStorable}

@@ -9,14 +9,19 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.funk.jajo.customtypes.Action;
+import com.funk.jajo.customtypes.Change;
 import com.funk.jajo.customtypes.Changelog;
 import com.funk.jajo.customtypes.ChangelogStorable;
 import com.funk.jajo.customtypes.ChangelogStorer;
 import com.funk.jajo.customtypes.FTPChangelogStorer;
 import com.funk.jajo.customtypes.FTPStorable;
 import com.funk.jajo.customtypes.FTPStorer;
+import com.funk.jajo.customtypes.Payment;
+import com.funk.jajo.customtypes.PaymentChange;
 import com.funk.jajo.customtypes.Person;
 import com.funk.jajo.customtypes.PersonStorer;
+import com.funk.jajo.customtypes.ShoppingEntryChange;
 
 import java.security.InvalidParameterException;
 
@@ -64,6 +69,10 @@ public class MainActivity extends AppBarActivity {
         Person p1 = null;
         Person p2 = null;
 
+        if ( this.viewModel == null ) {
+            this.viewModel = ViewModelProviders.of ( this ).get( AppViewModel.class );
+        }
+
         if ( ( onlineFirst == null || onlineSecond == null) && ( offlineFirst == null || offlineSecond == null ) ) {
             return;
         } else if ( onlineFirst == null || onlineSecond == null ) {
@@ -72,14 +81,50 @@ public class MainActivity extends AppBarActivity {
         } else if ( offlineFirst == null || offlineSecond == null ) {
             p1 = onlineFirst;
             p2 = onlineSecond;
-            /* A local and an online version could have been fetched. Compare them and merge!*/
+            /* A local and an online version could have been fetched. Therefore, we have to take
+            * a look at the changelog in order to process the changes correctly. */
         } else {
-            p1 = onlineFirst.merge ( offlineFirst);
-            p2 = onlineSecond.merge( offlineSecond);
-        }
+            /* Start with the offline versions of both the offline persons. */
+            p1 = offlineFirst;
+            p2 = offlineSecond;
 
-        if ( this.viewModel == null ) {
-            this.viewModel = ViewModelProviders.of ( this ).get( AppViewModel.class );
+            /* Download the changelog from the ftp server. */
+           FTPChangelogStorer ftpChangelog = new FTPChangelogStorer( this.getApplicationContext());
+           ChangelogStorable ftpStorable = ftpChangelog.getStorable();
+
+           /* Take a look at the remote Changelog, since that is the relevant component */
+            Changelog remoteChangelog = ftpStorable.getRemoteChangelog( this.viewModel.getDeviceName());
+
+            /* Iterate through the remote changelog, inspect all the Changes and,
+            depending on its type, insert the changes into the offline version of the person. */
+            for ( Change c: remoteChangelog.getChanges() ) {
+                if ( c instanceof PaymentChange ) {
+                    PaymentChange p = ( PaymentChange ) c;
+                    Payment pay = new Payment( p.getDescription(), p.getMoneyAmount(), p.getCalendar());
+
+                    if ( p.getAction() == Action.ADD ) {
+
+                        if ( p.getPersonName().equals( p1.getName())) {
+                            p1.addPayment(pay);
+                        } else {
+                            p2.addPayment(pay);
+                        }
+                    } else if ( p.getAction() == Action.DELETE )  {
+
+                        Person payer = null;
+                        if ( p.getPersonName().equals ( p1.getName())) {
+                            payer = p1;
+                        } else {
+                            payer = p2;
+                        }
+
+                        payer.deletePayment( pay );
+                    }
+                } else if ( c instanceof ShoppingEntryChange ) {
+                    /* TODO: Insert ShoppingEntryChanges into the Application. */
+                }
+            }
+
         }
 
         if ( p1 != null && p2 != null ) {
