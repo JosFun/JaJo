@@ -123,6 +123,9 @@ public class MainActivity extends AppBarActivity {
                     /* TODO: Insert ShoppingEntryChanges into the Application. */
                 }
             }
+            /* After implementing all the changes in the local version of the Changelog, we can
+            * clear the remoteChangelog stored on the device locally.*/
+            remoteChangelog.getChanges().clear();
 
         }
 
@@ -188,9 +191,11 @@ public class MainActivity extends AppBarActivity {
 
     private void storeData( ) {
         /*
-            First of all, load the remote data from the server
+            First of all, load the remote data from the server before overwriting it.
         */
         this.loadData();
+
+        /* Then, store the persons on the device locally.*/
         if ( this.viewModel != null && this.viewModel.getSecond() != null && this.viewModel.getSecond() != null ) {
             {
                 /* First: store it locally */
@@ -200,12 +205,13 @@ public class MainActivity extends AppBarActivity {
                 PersonStorer pS2 = new PersonStorer(this.viewModel.getSecond(),
                         getString(R.string.PERSON_KEY) + SECOND_SUFFIX, sP);
             }
-            /* Afterwards: Store it on the ftp server */
+            /* Afterwards: Store both the persons on the ftp server */
             {
                 FTPStorer storer = new FTPStorer( new FTPStorable( this.viewModel.getFirst(), this.viewModel.getSecond()), this.getApplicationContext());
             }
         }
-
+        /* Finally, store the changelog data both locally and online. */
+        this.storeChangelogData();
     }
 
     /**
