@@ -111,16 +111,28 @@ public class Person implements Comparable<Person>{
         for ( Payment payment: p.payments ) {
             if ( !this.payments.contains( payment)) {
                 this.payments.add ( payment );
-                Collections.sort( this.payments, new Comparator<Payment>() {
-                    @Override
-                    public int compare(Payment o1, Payment o2) {
-                        return o1.compareTo(o2);
-                    }
-                });
+                this.sortByDate();
             }
         }
 
         return this;
+    }
+
+    public void sortByDate ( ) {
+        Collections.sort(this.payments, new Comparator<Payment>() {
+            @Override
+            public int compare(Payment o1, Payment o2) {
+                return o1.compareTo(o2);
+            }
+        });
+    }
+
+    /**
+     * This method is to be used if data is to be changed or deleted as long as editing
+     * isn't possible yet.
+     */
+    public void correct ( ) {
+
     }
 
     public String getName( ) {
