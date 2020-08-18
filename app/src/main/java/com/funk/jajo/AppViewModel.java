@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 import com.funk.jajo.customtypes.Change;
 import com.funk.jajo.customtypes.Changelog;
 import com.funk.jajo.customtypes.Person;
+import com.google.firebase.auth.FirebaseUser;
 
 public class AppViewModel extends ViewModel {
 
@@ -12,6 +13,11 @@ public class AppViewModel extends ViewModel {
     * The name of the device, this app is running on.
     */
     private final String deviceName = android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL;
+
+    /**
+     * The {@link FirebaseUser} that is represented by this {@link AppViewModel}.
+     */
+    private FirebaseUser fBUser;
 
     private AppBarActivity.FragmentType currentFragment;
 
@@ -61,11 +67,20 @@ public class AppViewModel extends ViewModel {
             this.localChanges = new Changelog( this.deviceName );
         }
         this.localChanges.addChange( localChange );
-
     }
 
     public void setCurrentFragment ( AppBarActivity.FragmentType type ) {
         this.currentFragment = type;
+    }
+
+    public void setFireBaseUser ( FirebaseUser user ) {
+        this.fBUser = user;
+    }
+
+    public String getFireBaseTopic ( ) {
+        if ( this.fBUser != null ) {
+            return this.fBUser.getProviderId();
+        } else return null;
     }
 
     public Person getSecond( ) { return this.second; }

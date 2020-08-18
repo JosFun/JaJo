@@ -8,7 +8,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 
 import com.funk.jajo.Messaging.MyFirebaseMessagingService;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,6 +30,10 @@ import com.funk.jajo.customtypes.PaymentChange;
 import com.funk.jajo.customtypes.Person;
 import com.funk.jajo.customtypes.PersonStorer;
 import com.funk.jajo.customtypes.ShoppingEntryChange;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.security.InvalidParameterException;
 
@@ -33,9 +41,14 @@ public class MainActivity extends AppBarActivity {
     private static final String FIRST_SUFFIX = "_FIRST";
     private static final String SECOND_SUFFIX = "_SECOND";
 
+    private FirebaseAuth firebaseAuth;
+
     private AusgabenFragment ausgabenFragment;
     private EinkaufslisteFragment listenFragment;
     private AppViewModel viewModel;
+
+    private void authenticate ( ) {
+    }
 
     protected void loadData( ) {
         FTPStorable loadedData = null;
@@ -306,10 +319,55 @@ public class MainActivity extends AppBarActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        /* Instantiate the Firebase authentication service */
+        this.firebaseAuth = FirebaseAuth.getInstance();
+
         /* Start the firebase messaging service. */
         Intent serviceIntent = new Intent(this, MyFirebaseMessagingService.class);
         serviceIntent.putExtra( "device", this.viewModel.getDeviceName());
         startService(serviceIntent);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        /* Check if a user is already signed in and if so, process the information */
+        FirebaseUser user = this.firebaseAuth.getCurrentUser();
+
+        if ( user != null ) {
+            /* A user is already signed in */
+            Log.d("FireBase", "A user is already signed in ");
+            this.viewModel.setFireBaseUser( user );
+        } else {
+            this.firebaseAuth.signInAnonymously().addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if ( task.isSuccessful()) {
+                        // New anonymous user has been created successully
+                        FirebaseUser user = MainActivity.this.firebaseAuth.getCurrentUser();
+                        Log.d("FireBase", "Signed in anonoymous user");
+
+                        MainActivity.this.viewModel.setFireBaseUser( user );
+                    } else {
+                        Log.d( "FireBase", "Sign-in process failed");
+                    }
+                }
+            });
+        }
+
+        /* Subscribe to the topic with your UID */
+        Task t = FirebaseMessaging.getInstance().subscribeToTopic(this.viewModel.getFireBaseTopic()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                String msg = "SUBSCRIPTION IS SUCCESSFULL!";
+                if (!task.isSuccessful()) {
+                    msg = "SUBSCRIPTION IS NOT SUCCESSFULL!";
+                }
+                Log.d("SUB", msg);
+            }
+        });
+        Log.d( "Subscribed to Topic ", this.viewModel.getFireBaseTopic());
     }
 
     @Override

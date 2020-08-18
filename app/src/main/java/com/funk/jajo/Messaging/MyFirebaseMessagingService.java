@@ -36,18 +36,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onNewToken ( String s ) {
         super.onNewToken( s );
         Log.d("NEW_TOKEN", s);
-
-        Task t = FirebaseMessaging.getInstance().subscribeToTopic(getString(R.string.FIRE_BASE_TOPIC)).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                String msg = "SUBSCRIPTION IS SUCESSFULL!";
-                if (!task.isSuccessful()) {
-                    msg = "SUBSCRIPTION IS NOT SUCESSFULL!";
-                }
-                Log.d("SUB", msg);
-            }
-        });
-        Log.d( "Subscribed to Topic ", getString(R.string.FIRE_BASE_TOPIC));
     }
 
     @RequiresApi(api = android.os.Build.VERSION_CODES.O)
