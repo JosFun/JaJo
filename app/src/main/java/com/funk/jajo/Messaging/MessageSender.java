@@ -1,6 +1,8 @@
 package com.funk.jajo.Messaging;
 
+import android.app.Notification;
 import android.content.Context;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.Toast;
@@ -58,7 +60,7 @@ public class MessageSender {
             notificationBody.put ( "title", this.title );
             notificationBody.put ( "message", this.message );
 
-            notification.put ( "to", this.topic );
+            notification.put ( "to", "/topics/" + this.topic );
             notification.put ( "data", notificationBody );
         } catch ( JSONException e ) {
             Log.e( TAG, "createNotification:  " + e.getMessage() );
@@ -93,5 +95,6 @@ public class MessageSender {
                 return params;
             }
         };
+        MySingleton.getInstance(this.context).addToRequestQueue(jsonObjectRequest);
     }
 }

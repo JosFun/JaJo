@@ -3,6 +3,7 @@ package com.funk.jajo.Messaging;
 import android.app.NotificationManager;
 import android.app.NotificationChannel;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,34 +13,47 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.funk.jajo.MainActivity;
 import com.funk.jajo.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Random;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private final String ADMIN_CHANNEL_ID = "admin_channel";
-
     @Override
     public void onNewToken ( String s ) {
         super.onNewToken( s );
         Log.d("NEW_TOKEN", s);
-        FirebaseMessaging.getInstance().subscribeToTopic(getString(R.string.FIRE_BASE_TOPIC));
+
+        Task t = FirebaseMessaging.getInstance().subscribeToTopic(getString(R.string.FIRE_BASE_TOPIC)).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                String msg = "SUBSCRIPTION IS SUCESSFULL!";
+                if (!task.isSuccessful()) {
+                    msg = "SUBSCRIPTION IS NOT SUCESSFULL!";
+                }
+                Log.d("SUB", msg);
+            }
+        });
         Log.d( "Subscribed to Topic ", getString(R.string.FIRE_BASE_TOPIC));
     }
 
     @RequiresApi(api = android.os.Build.VERSION_CODES.O)
     private void setupChannels(NotificationManager notificationManager){
         CharSequence adminChannelName = "New notification";
-        String adminChannelDescription = "Device to devie notification";
+        String adminChannelDescription = "Device to device notification";
 
         NotificationChannel adminChannel;
         adminChannel = new NotificationChannel(ADMIN_CHANNEL_ID, adminChannelName, NotificationManager.IMPORTANCE_HIGH);
@@ -54,6 +68,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage){
+
         final Intent intent = new Intent(this, MainActivity.class);
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         int notificationID = new Random().nextInt(3000);

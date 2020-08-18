@@ -308,6 +308,7 @@ public class MainActivity extends AppBarActivity {
 
         /* Start the firebase messaging service. */
         Intent serviceIntent = new Intent(this, MyFirebaseMessagingService.class);
+        serviceIntent.putExtra( "device", this.viewModel.getDeviceName());
         startService(serviceIntent);
     }
 

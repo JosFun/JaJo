@@ -296,9 +296,9 @@ public class AusgabenFragment extends Fragment implements DialogListener {
                 * its data.*/
                 MessageSender sender = new MessageSender( this.getContext(),
                         getString(R.string.FIRE_BASE_TITLE),
-                        getString(R.string.FIRE_BASE_MSG_ADD) +
+                         getString(R.string.FIRE_BASE_MSG_ADD) +
                                 ((PaymentChange) change).getDescription() + ", " +
-                                ((PaymentChange) change).getMoneyAmount());
+                                ((PaymentChange) change).getMoneyAmount().getValue() + "€");
 
                 this.updateNextPayer ( );
             }
@@ -318,6 +318,6 @@ public class AusgabenFragment extends Fragment implements DialogListener {
         MessageSender sender = new MessageSender( this.getContext(), getString ( R.string.FIRE_BASE_TITLE )
                 ,"Zahlung von " + change.getPersonName() +
                 " gelöscht: " + change.getDescription() + ", " + change.getMoneyAmount().getValue()
-                );
+                + "€");
     }
 }

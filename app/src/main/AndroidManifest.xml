@@ -18,6 +18,7 @@
         android:theme="@style/AppTheme">
         <service
             android:enabled="true"
+            android:exported="false"
             android:name=".Messaging.MyFirebaseMessagingService"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
