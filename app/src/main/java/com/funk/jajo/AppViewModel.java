@@ -78,9 +78,9 @@ public class AppViewModel extends ViewModel {
         this.fBUser = user;
     }
 
-    public String getFireBaseTopic ( ) {
+    public String getUID( ) {
         if ( this.fBUser != null ) {
-            return this.fBUser.getProviderId();
+            return this.fBUser.getUid();
         } else return null;
     }
 

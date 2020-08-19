@@ -337,24 +337,6 @@ public class MainActivity extends AppBarActivity {
     @Override
     public void onStart ( ) {
         super.onStart();
-        /* Once the activity is started, register the notificationBroadCastReceiver of this activity
-        * for receiving new Notification intents */
-        LocalBroadcastManager.getInstance(this).registerReceiver(this.notificationBroadcastReceiver,
-                new IntentFilter( getString(R.string.INTENT_FILTER_NEW_NOTIFICATION)));
-    }
-
-    @Override
-    public void onStop ( ) {
-        super.onStop();
-        /* Once the activity is stopped, unregister the notificationBroadCastReceiver of this
-        * activity for receiving new Notification intents. */
-        LocalBroadcastManager.getInstance(this).
-                unregisterReceiver(this.notificationBroadcastReceiver);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
 
         /* Check if a user is already signed in and if so, process the information */
         FirebaseUser user = this.firebaseAuth.getCurrentUser();
@@ -379,6 +361,20 @@ public class MainActivity extends AppBarActivity {
                 }
             });
         }
+
+        /* Once the activity is started, register the notificationBroadCastReceiver of this activity
+        * for receiving new Notification intents */
+        LocalBroadcastManager.getInstance(this).registerReceiver(this.notificationBroadcastReceiver,
+                new IntentFilter( getString(R.string.INTENT_FILTER_NEW_NOTIFICATION)));
+    }
+
+    @Override
+    public void onStop ( ) {
+        super.onStop();
+        /* Once the activity is stopped, unregister the notificationBroadCastReceiver of this
+        * activity for receiving new Notification intents. */
+        LocalBroadcastManager.getInstance(this).
+                unregisterReceiver(this.notificationBroadcastReceiver);
     }
 
     @Override

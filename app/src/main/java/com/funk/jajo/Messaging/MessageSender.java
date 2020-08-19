@@ -34,6 +34,7 @@ public class MessageSender {
     private String topic;
     private String title;
     private String message;
+    private String uid;
 
     /**
      * Create a new {@link MessageSender} and send a notification to the remote device
@@ -41,10 +42,11 @@ public class MessageSender {
      * @param msgTitle The title of the message that is to be sent
      * @param message The message text that is to be sent to the remote device
      */
-    public MessageSender (Context context, String msgTitle, String message ) {
+    public MessageSender (Context context, String msgTitle, String message, String uid ) {
         this.context = context;
         this.title = msgTitle;
         this.message = message;
+        this.uid = uid;
 
         this.topic = context.getString(R.string.FIRE_BASE_TOPIC);
 
@@ -59,6 +61,7 @@ public class MessageSender {
         try {
             notificationBody.put ( "title", this.title );
             notificationBody.put ( "message", this.message );
+            notificationBody.put ( "uid", this.uid );
 
             notification.put ( "to", "/topics/" + this.topic );
             notification.put ( "data", notificationBody );
