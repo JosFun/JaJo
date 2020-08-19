@@ -371,6 +371,11 @@ public class MainActivity extends AppBarActivity {
         }
     }
 
+    /**
+     * This {@link BroadcastReceiver is supposed to receive Broadcasts from the
+     * {@link MyFirebaseMessagingService} of this application and load the most recent data
+     * accordingly.
+     */
     private class NotificationBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {

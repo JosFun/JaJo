@@ -25,10 +25,31 @@ public class ChangelogStorable {
     public Changelog getRemoteChangelog(String deviceName) {
         if (!this.firstChangelog.getOriginHost().equals(deviceName) &&
                 this.secondChangelog.getOriginHost().equals(deviceName)) {
+
             return this.firstChangelog;
+
         } else if (!this.secondChangelog.getOriginHost().equals(deviceName) &&
                 this.firstChangelog.getOriginHost().equals(deviceName)) {
+
             return this.secondChangelog;
+
+        /* If both the deviceNames are the same: Select the one that isn't empty. */
+        } else if ( this.firstChangelog.getOriginHost().equals(deviceName) &&
+                this.secondChangelog.getOriginHost().equals(deviceName) ||
+                !this.firstChangelog.getOriginHost().equals(deviceName) &&
+                !this.secondChangelog.getOriginHost().equals(deviceName)){
+
+            if ( this.firstChangelog.getChanges().isEmpty() &&
+                !this.secondChangelog.getChanges().isEmpty()) {
+
+                return this.secondChangelog;
+
+            } else if ( this.secondChangelog.getChanges().isEmpty() &&
+                !this.firstChangelog.getChanges().isEmpty()) {
+
+                return this.firstChangelog;
+
+            } else return null;
         } else return null;
     }
 
@@ -42,10 +63,31 @@ public class ChangelogStorable {
     public Changelog getLocalChangelog(String deviceName) {
         if (this.firstChangelog.getOriginHost().equals(deviceName) &&
                 !this.secondChangelog.getOriginHost().equals(deviceName)) {
+
             return this.firstChangelog;
+
         } else if (this.secondChangelog.getOriginHost().equals(deviceName) &&
                 this.firstChangelog.getOriginHost().equals(deviceName)) {
+
             return this.secondChangelog;
+
+        /* If both the deviceNames are the same: Select the one that isn't empty. */
+        }  else if ( this.firstChangelog.getOriginHost().equals(deviceName) &&
+                this.secondChangelog.getOriginHost().equals(deviceName) ||
+                !this.firstChangelog.getOriginHost().equals(deviceName) &&
+                        !this.secondChangelog.getOriginHost().equals(deviceName)){
+
+            if ( this.firstChangelog.getChanges().isEmpty() &&
+                    !this.secondChangelog.getChanges().isEmpty()) {
+
+                return this.secondChangelog;
+
+            } else if ( this.secondChangelog.getChanges().isEmpty() &&
+                    !this.firstChangelog.getChanges().isEmpty()) {
+
+                return this.firstChangelog;
+
+            } else return null;
         } else return null;
     }
 }
