@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.funk.jajo.customtypes.Change;
 import com.funk.jajo.customtypes.Changelog;
+import com.funk.jajo.customtypes.PaymentChange;
 import com.funk.jajo.customtypes.Person;
 
 public class AppViewModel extends ViewModel {
@@ -56,7 +57,7 @@ public class AppViewModel extends ViewModel {
 
     public void setRemoteChanges ( Changelog remoteChanges ) { this.remoteChanges = remoteChanges; }
 
-    public void addLocalChange ( Change localChange ) {
+    public void addLocalChange (PaymentChange localChange) {
         if ( this.localChanges == null ) {
             this.localChanges = new Changelog( this.deviceName );
         }

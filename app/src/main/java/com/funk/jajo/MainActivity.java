@@ -215,7 +215,7 @@ public class MainActivity extends AppBarActivity {
     protected void storeData( ) {
 
         /* Then, store the persons on the device locally.*/
-        if ( this.viewModel != null && this.viewModel.getSecond() != null && this.viewModel.getSecond() != null ) {
+        if ( this.viewModel != null && this.viewModel.getFirst() != null && this.viewModel.getSecond() != null ) {
             {
                 /* First: store it locally */
                 SharedPreferences sP = this.getSharedPreferences(getString(R.string.PERSON_SHARED_PREF), MODE_PRIVATE);
@@ -348,7 +348,6 @@ public class MainActivity extends AppBarActivity {
     @Override
     public void onPause ( ) {
         super.onPause();
-        this.storeData();
     }
 
     @Override

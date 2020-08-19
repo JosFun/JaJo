@@ -36,7 +36,8 @@ public class Person implements Comparable<Person>{
     }
 
     public void deletePayment ( Payment p ) {
-        this.payments.remove ( p );
+        boolean b = this.payments.remove ( p );
+        if ( b ) { };
     }
 
     public void deletePayment ( int position ) { this.payments.remove ( position );}

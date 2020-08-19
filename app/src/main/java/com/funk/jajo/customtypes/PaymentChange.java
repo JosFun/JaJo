@@ -26,6 +26,9 @@ public class PaymentChange extends Change {
      */
     private Calendar calendar;
 
+    public PaymentChange ( ) {
+        super ( );
+    }
     /**
      * Create a new PaymnentChange by specifying all necessary parameter values
      * @param performedAction The {@link Action} that has been performed

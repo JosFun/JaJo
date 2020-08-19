@@ -62,7 +62,7 @@ public class Payment implements Comparable<Payment> {
         if ( o == null ) return false;
         if ( o instanceof Payment) {
             return (( Payment ) o).amount.getValue() == this.amount.getValue()
-                    && this.compareTo( (Payment)o) == 0;
+                    && this.description.equals(((Payment)o).getDescription());
         } else return false;
     }
 }

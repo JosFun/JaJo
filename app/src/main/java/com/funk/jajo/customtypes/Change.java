@@ -9,6 +9,10 @@ public abstract class Change {
      */
     private Action action;
 
+    public Change ( ) {
+
+    }
+
     public Change ( Action performedAction ) {
         this.action = performedAction;
     }

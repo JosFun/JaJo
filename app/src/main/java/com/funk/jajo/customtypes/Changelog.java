@@ -20,27 +20,27 @@ public class Changelog {
     /**
      * The Queue containing all the {@link Change}s that still need to be corrected.
      */
-    private Queue<Change> changes;
+    private Queue<PaymentChange> changes;
 
     public Changelog ( String origin ) {
         this.originHost = origin;
-        this.changes = new LinkedList<Change>();
+        this.changes = new LinkedList<PaymentChange>();
     }
 
     public String getOriginHost ( ) {
         return this.originHost;
     }
 
-    public void addChange ( Change ch ) {
+    public void addChange ( PaymentChange ch ) {
         if ( this.changes == null ) {
             this.changes = new LinkedList<>();
         }
         this.changes.add( ch );
     }
 
-    public Queue<Change> getChanges ( ) {
+    public Queue<PaymentChange> getChanges ( ) {
         if ( this.changes == null ) {
-            return new LinkedList<Change>( );
+            return new LinkedList<PaymentChange>( );
         } else {
             return this.changes;
         }
