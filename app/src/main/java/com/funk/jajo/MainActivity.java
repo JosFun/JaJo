@@ -2,10 +2,14 @@ package com.funk.jajo;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.funk.jajo.Messaging.MyFirebaseMessagingService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -36,6 +40,8 @@ public class MainActivity extends AppBarActivity {
     private AusgabenFragment ausgabenFragment;
     private EinkaufslisteFragment listenFragment;
     private AppViewModel viewModel;
+
+    private NotificationBroadcastReceiver notificationBroadcastReceiver;
 
     protected void loadData( ) {
         FTPStorable loadedData = null;
@@ -310,6 +316,27 @@ public class MainActivity extends AppBarActivity {
         Intent serviceIntent = new Intent(this, MyFirebaseMessagingService.class);
         serviceIntent.putExtra( "device", this.viewModel.getDeviceName());
         startService(serviceIntent);
+
+        /* Create new instance for the NotificationBroadCastReceiver of this MainActivity */
+        this.notificationBroadcastReceiver = new NotificationBroadcastReceiver();
+    }
+
+    @Override
+    public void onStart ( ) {
+        super.onStart();
+        /* Once the activity is started, register the notificationBroadCastReceiver of this activity
+        * for receiving new Notification intents */
+        LocalBroadcastManager.getInstance(this).registerReceiver(this.notificationBroadcastReceiver,
+                new IntentFilter( getString(R.string.INTENT_FILTER_NEW_NOTIFICATION)));
+    }
+
+    @Override
+    public void onStop ( ) {
+        super.onStop();
+        /* Once the activity is stopped, unregister the notificationBroadCastReceiver of this
+        * activity for receiving new Notification intents. */
+        LocalBroadcastManager.getInstance(this).
+                unregisterReceiver(this.notificationBroadcastReceiver);
     }
 
     @Override
@@ -341,6 +368,13 @@ public class MainActivity extends AppBarActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected( item );
+        }
+    }
+
+    private class NotificationBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            MainActivity.this.loadData();
         }
     }
 

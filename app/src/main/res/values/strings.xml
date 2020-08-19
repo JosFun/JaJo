@@ -20,4 +20,6 @@
     <string name="FIRE_BASE_TITLE">RelOrg Datenupdate</string>
     <string name="FIRE_BASE_MSG_ADD">Neue Zahlung: </string>
 
+    <string name="INTENT_FILTER_NEW_NOTIFICATION">New Data Notification</string>
+
 </resources>

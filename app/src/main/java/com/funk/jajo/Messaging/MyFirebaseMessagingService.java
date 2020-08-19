@@ -73,7 +73,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      */
     private void sendBroadcast ( ) {
         LocalBroadcastManager broadcaster = LocalBroadcastManager.getInstance(this);
-        Intent intent = new Intent ( Intent.ACTION_ATTACH_DATA );
+        Intent intent = new Intent ( getString(R.string.INTENT_FILTER_NEW_NOTIFICATION) );
         broadcaster.sendBroadcast(intent);
     }
 
