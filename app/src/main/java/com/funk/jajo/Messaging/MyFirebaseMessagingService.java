@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import java.util.Random;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -64,6 +66,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (notificationManager != null) {
             notificationManager.createNotificationChannel(adminChannel);
         }
+    }
+
+    /**
+     * Send a broadcast, signaling to other activities that a new Notification has arrived
+     */
+    private void sendBroadcast ( ) {
+        LocalBroadcastManager broadcaster = LocalBroadcastManager.getInstance(this);
+        Intent intent = new Intent ( Intent.ACTION_ATTACH_DATA );
+        broadcaster.sendBroadcast(intent);
     }
 
     @Override
@@ -103,6 +114,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationBuilder.setColor(getResources().getColor(R.color.colorPrimaryDark));
         }
         notificationManager.notify(notificationID, notificationBuilder.build());
+
+        /* Signal the MainActivity that a new notification has arrived */
+        this.sendBroadcast();
+
+
     }
 
 
