@@ -42,7 +42,7 @@ public class AusgabenFragment extends Fragment implements DialogListener {
     private PaymentListAdapter paymentAdapterFirst = null;
     private PaymentListAdapter paymentAdapterSecond = null;
 
-    private void updateNextPayer ( ) {
+    protected void updateNextPayer ( ) {
         TextView nextPayer = this.fragView.findViewById(R.id.next_payer);
         if ( nextPayer == null ) return;
         double sum =
@@ -54,6 +54,26 @@ public class AusgabenFragment extends Fragment implements DialogListener {
             nextPayer.setText ( viewModel.getSecond().getName() + " zahlt!");
             nextPayer.setTextColor( ContextCompat.getColor( this.getContext(), R.color.colorSecond));
         }
+    }
+
+    /**
+     * Rearrange the payments in the first Payment {@link RecyclerView}.
+     */
+    protected void reArrangeFirstPaymentRecycler ( ) {
+        AusgabenFragment.this.paymentAdapterFirst = new PaymentListAdapter(
+                AusgabenFragment.this.viewModel.getFirst(), AusgabenFragment.this.getContext() );
+
+        AusgabenFragment.this.recyclerFirst.setAdapter( AusgabenFragment.this.paymentAdapterFirst);
+    }
+
+    /**
+     * Rearrange the payments in the first Payment {@link RecyclerView}.
+     */
+    protected void reArrangeSecondPaymentRecycler ( ) {
+        AusgabenFragment.this.paymentAdapterSecond = new PaymentListAdapter(
+                AusgabenFragment.this.viewModel.getSecond(), AusgabenFragment.this.getContext());
+
+        AusgabenFragment.this.recyclerSecond.setAdapter ( AusgabenFragment.this.paymentAdapterSecond );
     }
 
     @Override
@@ -128,10 +148,7 @@ public class AusgabenFragment extends Fragment implements DialogListener {
 
                 /* QuickFix: Define new instances of the adapter, since otherwise
                 notifyDataSetChanged misbehaves for some reason*/
-                AusgabenFragment.this.paymentAdapterFirst = new PaymentListAdapter(
-                        AusgabenFragment.this.viewModel.getFirst(), AusgabenFragment.this.getContext() );
-
-                AusgabenFragment.this.recyclerFirst.setAdapter( AusgabenFragment.this.paymentAdapterFirst);
+                AusgabenFragment.this.reArrangeFirstPaymentRecycler();
 
                 AusgabenFragment.this.updateNextPayer();
 
@@ -203,10 +220,7 @@ public class AusgabenFragment extends Fragment implements DialogListener {
 
                  /* QuickFix: Define new instances of the adapter, since otherwise
                 notifyDataSetChanged misbehaves for some reason*/
-                AusgabenFragment.this.paymentAdapterSecond = new PaymentListAdapter(
-                        AusgabenFragment.this.viewModel.getSecond(), AusgabenFragment.this.getContext());
-
-                AusgabenFragment.this.recyclerSecond.setAdapter ( AusgabenFragment.this.paymentAdapterSecond );
+                AusgabenFragment.this.reArrangeSecondPaymentRecycler();
 
                 AusgabenFragment.this.updateNextPayer();
 

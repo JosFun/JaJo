@@ -348,7 +348,6 @@ public class MainActivity extends AppBarActivity {
     @Override
     public void onPause ( ) {
         super.onPause();
-        /* Store the Persons on the phone. */
         this.storeData();
     }
 
@@ -379,7 +378,15 @@ public class MainActivity extends AppBarActivity {
     private class NotificationBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            /* Update the application data by downloading it. */
             MainActivity.this.loadData();
+
+            /* Rearrange the data being visualized in the recycler on the Ausgabenfragment */
+            MainActivity.this.ausgabenFragment.reArrangeFirstPaymentRecycler();
+            MainActivity.this.ausgabenFragment.reArrangeSecondPaymentRecycler();
+
+            /* Recalculate the next payer */
+            MainActivity.this.ausgabenFragment.updateNextPayer();
         }
     }
 
