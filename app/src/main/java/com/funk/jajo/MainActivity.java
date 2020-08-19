@@ -355,19 +355,6 @@ public class MainActivity extends AppBarActivity {
                 }
             });
         }
-
-        /* Subscribe to the topic with your UID */
-        Task t = FirebaseMessaging.getInstance().subscribeToTopic(this.viewModel.getFireBaseTopic()).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                String msg = "SUBSCRIPTION IS SUCCESSFULL!";
-                if (!task.isSuccessful()) {
-                    msg = "SUBSCRIPTION IS NOT SUCCESSFULL!";
-                }
-                Log.d("SUB", msg);
-            }
-        });
-        Log.d( "Subscribed to Topic ", this.viewModel.getFireBaseTopic());
     }
 
     @Override
@@ -379,8 +366,6 @@ public class MainActivity extends AppBarActivity {
     @Override
     public void onPause ( ) {
         super.onPause();
-        /* Store the Persons on the phone. */
-        this.storeData();
     }
 
     @Override
