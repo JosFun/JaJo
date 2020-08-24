@@ -16,9 +16,11 @@ import org.apache.commons.net.ftp.FTPReply;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.net.InetAddress;
 
 public class FTPChangelogStorer {
-    private static final String HOSTNAME = "fritz.box";
+    private static final String LOCAL_HOST = "fritz.box";
+    private static final String HOSTNAME = "92.193.157.137";
     private static final String USERNAME = "JosFun";
     private static final String PASSWORD = "Tacomia77!?";
     private static final String DIR_NAME = "JaJo";
@@ -46,14 +48,30 @@ public class FTPChangelogStorer {
     private void uploadStorable ( ) {
         String jsonFile = new Gson().toJson( storable );
 
-        try {
-            this.ftpClient.connect ( HOSTNAME );
+        try{
+            this.ftpClient.connect ( InetAddress.getByName(HOSTNAME));
             int reply = ftpClient.getReplyCode();
 
             if (!FTPReply.isPositiveCompletion(reply)){
                 Toast.makeText(this.context, "Could not sync with the server.", Toast.LENGTH_SHORT).show();
+                return;
             }
+        } catch ( Exception e ) {
+            e.printStackTrace();
+            try {
+                this.ftpClient.connect(LOCAL_HOST);
+                int reply = ftpClient.getReplyCode();
 
+                if (!FTPReply.isPositiveCompletion(reply)) {
+                    Toast.makeText(this.context, "Could not sync with the server.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            } catch ( Exception f ) {
+                e.printStackTrace();
+                return;
+            }
+        }
+        try {
             this.ftpClient.login ( USERNAME, PASSWORD );
             this.ftpClient.enterLocalPassiveMode();
             this.ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
@@ -82,13 +100,32 @@ public class FTPChangelogStorer {
 
     private String downloadJSON ( ) {
         String jsonFile = "";
-        try {
-            this.ftpClient.connect( HOSTNAME );
+
+        try{
+            this.ftpClient.connect ( InetAddress.getByName(HOSTNAME));
             int reply = ftpClient.getReplyCode();
 
             if (!FTPReply.isPositiveCompletion(reply)){
                 Toast.makeText(this.context, "Could not sync with the server.", Toast.LENGTH_SHORT).show();
+                return "";
             }
+        } catch ( Exception e ) {
+            e.printStackTrace();
+            try {
+                this.ftpClient.connect(LOCAL_HOST);
+                int reply = ftpClient.getReplyCode();
+
+                if (!FTPReply.isPositiveCompletion(reply)) {
+                    Toast.makeText(this.context, "Could not sync with the server.", Toast.LENGTH_SHORT).show();
+                    return "";
+                }
+            } catch ( Exception f ) {
+                e.printStackTrace();
+                return "";
+            }
+        }
+
+        try {
 
             this.ftpClient.login ( USERNAME, PASSWORD );
             this.ftpClient.enterLocalPassiveMode();
