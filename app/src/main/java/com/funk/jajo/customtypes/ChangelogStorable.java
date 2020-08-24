@@ -67,7 +67,7 @@ public class ChangelogStorable {
             return this.firstChangelog;
 
         } else if (this.secondChangelog.getOriginHost().equals(deviceName) &&
-                this.firstChangelog.getOriginHost().equals(deviceName)) {
+                !this.firstChangelog.getOriginHost().equals(deviceName)) {
 
             return this.secondChangelog;
 
@@ -80,12 +80,12 @@ public class ChangelogStorable {
             if ( this.firstChangelog.getChanges().isEmpty() &&
                     !this.secondChangelog.getChanges().isEmpty()) {
 
-                return this.secondChangelog;
+                return this.firstChangelog;
 
             } else if ( this.secondChangelog.getChanges().isEmpty() &&
                     !this.firstChangelog.getChanges().isEmpty()) {
 
-                return this.firstChangelog;
+                return this.secondChangelog;
 
             } else return null;
         } else return null;

@@ -123,9 +123,9 @@ public class MainActivity extends AppBarActivity {
 
                     if ( p.getAction() == Action.ADD ) {
 
-                        if ( p.getPersonName().equals( p1.getName())) {
+                        if ( p.getPersonName().equals( p1.getName()) && !p1.getPayments().contains(pay)) {
                             p1.addPayment(pay);
-                        } else {
+                        } else if ( !p2.getPayments().contains(pay)){
                             p2.addPayment(pay);
                         }
                     } else if ( p.getAction() == Action.DELETE )  {

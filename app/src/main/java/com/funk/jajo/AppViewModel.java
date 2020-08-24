@@ -88,9 +88,19 @@ public class AppViewModel extends ViewModel {
 
     public Person getFirst( ) { return this.first; }
 
-    public Changelog getLocalChanges ( ) { return this.localChanges;}
+    public Changelog getLocalChanges ( ) {
+        if ( this.localChanges == null ) {
+            this.localChanges = new Changelog( this.getDeviceName());
+        }
+        return this.localChanges;
+    }
 
-    public Changelog getRemoteChanges ( ) { return this.remoteChanges; }
+    public Changelog getRemoteChanges ( ) {
+        if ( this.remoteChanges == null ) {
+            this.remoteChanges = new Changelog ( this.getDeviceName() );
+        }
+        return this.remoteChanges;
+    }
 
     public double getShareRatio (){ return this.shareRatio; }
 }

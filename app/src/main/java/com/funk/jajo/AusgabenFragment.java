@@ -299,6 +299,10 @@ public class AusgabenFragment extends Fragment implements DialogListener {
 
                 if ( change != null && localChanges != null ) {
                     localChanges.addChange( change );
+                } else {
+                    localChanges = new Changelog(this.viewModel.getDeviceName());
+                    localChanges.addChange ( change );
+                    this.viewModel.setLocalChanges(localChanges);
                 }
 
                 /* Store the updated data both on the device and online */
@@ -310,7 +314,7 @@ public class AusgabenFragment extends Fragment implements DialogListener {
                 * its data.*/
                 MessageSender sender = new MessageSender( this.getContext(),
                         getString(R.string.FIRE_BASE_TITLE),
-                         getString(R.string.FIRE_BASE_MSG_ADD) +
+                         getString(R.string.FIRE_BASE_MSG_ADD) + " " +
                                 ((PaymentChange) change).getDescription() + ", " +
                                 ((PaymentChange) change).getMoneyAmount().getValue() + "€",
                         this.viewModel.getUID());
