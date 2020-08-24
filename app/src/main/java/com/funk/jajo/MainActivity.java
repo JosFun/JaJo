@@ -424,6 +424,9 @@ public class MainActivity extends AppBarActivity {
 
             /* Recalculate the next payer */
             MainActivity.this.ausgabenFragment.updateNextPayer();
+
+            /* Finally, update the data being stored online */
+            MainActivity.this.storeData();
         }
     }
 

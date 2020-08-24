@@ -330,10 +330,11 @@ public class AusgabenFragment extends Fragment implements DialogListener {
      * Also, a notification on the remote device will be generated.
      */
     private void processDeletion ( PaymentChange change ) {
+        this.mainActivity = ( MainActivity ) this.getActivity();
         if ( this.mainActivity != null ) {
             this.mainActivity.storeData();
         }
-        this.mainActivity.storeData();
+
         MessageSender sender = new MessageSender( this.getContext(), getString ( R.string.FIRE_BASE_TITLE )
                 ,"Zahlung von " + change.getPersonName() +
                 " gelöscht: " + change.getDescription() + ", " + change.getMoneyAmount().getValue()

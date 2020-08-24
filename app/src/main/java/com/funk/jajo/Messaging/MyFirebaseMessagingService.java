@@ -20,6 +20,9 @@ import com.funk.jajo.MainActivity;
 import com.funk.jajo.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -84,6 +87,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         final Intent intent = new Intent(this, MainActivity.class);
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         int notificationID = new Random().nextInt(3000);
+
+        /* Obtain a reference to the currently logged in user */
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        /* Get the UID of the currently logged in user */
+        String uid = user.getUid();
+
+        /* Get the id attached to the message */
+        String messageUID = remoteMessage.getData().get("uid");
+
+        /* Compare the logged in users's id with the id attached to the message:
+         * If it's the same, then the message has been sent by this very device.
+          * Therefore, the message is to be dropped. */
+        if ( uid.equals ( messageUID) ) {
+            return;
+        }
 
       /*
         Apps targeting SDK 26 or above (Android O) must implement notification channels and add its notifications
