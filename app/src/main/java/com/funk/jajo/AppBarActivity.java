@@ -18,7 +18,8 @@ public abstract class AppBarActivity extends AppCompatActivity {
 
     protected enum FragmentType {
         AUSGABEN,
-        EINKAUFSLISTE
+        EINKAUFSLISTE,
+        SETTINGS
     }
     /**
      * indicates whether or not the toolBar is currently present on the activity.
@@ -70,6 +71,9 @@ public abstract class AppBarActivity extends AppCompatActivity {
                     break;
                 case EINKAUFSLISTE:
                     this.getSupportActionBar().setTitle( "Einkaufsliste" );
+                    break;
+                case SETTINGS:
+                    this.getSupportActionBar().setTitle( "Einstellungen" );
                     break;
                 default:
                     this.getSupportActionBar().setTitle(R.string.app_name);

@@ -37,7 +37,6 @@ import com.funk.jajo.customtypes.ShoppingEntryChange;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.security.InvalidParameterException;
 
@@ -49,6 +48,7 @@ public class MainActivity extends AppBarActivity {
 
     private AusgabenFragment ausgabenFragment;
     private EinkaufslisteFragment listenFragment;
+    private SettingsFragment settingsFragment;
     private AppViewModel viewModel;
 
     private NotificationBroadcastReceiver notificationBroadcastReceiver;
@@ -317,6 +317,8 @@ public class MainActivity extends AppBarActivity {
             this.fragmentTransition( R.id.frame_layout, this.ausgabenFragment, 0 );
         } else if ( this.viewModel.getCurrentFragment() == FragmentType.EINKAUFSLISTE ) {
             this.fragmentTransition( R.id.frame_layout, this.listenFragment, 1 );
+        } else if ( this.viewModel.getCurrentFragment() == FragmentType.SETTINGS) {
+            this.fragmentTransition( R.id.frame_layout, this.settingsFragment, 2 );
         }
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -381,6 +383,7 @@ public class MainActivity extends AppBarActivity {
     protected void createFragments() {
         this.ausgabenFragment = new AusgabenFragment();
         this.listenFragment = new EinkaufslisteFragment();
+        this.settingsFragment = new SettingsFragment();
     }
 
     @Override
@@ -400,7 +403,9 @@ public class MainActivity extends AppBarActivity {
     public boolean onOptionsItemSelected (@NonNull MenuItem item) {
         switch ( item.getItemId()) {
             case R.id.settings_button:
-                /* Show settings menu */
+                this.viewModel.setCurrentFragment(FragmentType.SETTINGS);
+                this.setToolBarText( this.viewModel.getCurrentFragment());
+                this.fragmentTransition(R.id.frame_layout, this.settingsFragment, 2 );
                 return true;
             default:
                 return super.onOptionsItemSelected( item );

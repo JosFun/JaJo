@@ -20,7 +20,7 @@ import java.net.InetAddress;
 
 public class FTPChangelogStorer {
     private static final String LOCAL_HOST = "fritz.box";
-    private static final String HOSTNAME = "92.193.157.137";
+    private static final String HOSTNAME = "tprql25djxa0bo4c.myfritz.net";
     private static final String USERNAME = "JosFun";
     private static final String PASSWORD = "Tacomia77!?";
     private static final String DIR_NAME = "JaJo";
@@ -59,6 +59,7 @@ public class FTPChangelogStorer {
         } catch ( Exception e ) {
             e.printStackTrace();
             try {
+                this.ftpClient.disconnect();
                 this.ftpClient.connect(LOCAL_HOST);
                 int reply = ftpClient.getReplyCode();
 
@@ -112,6 +113,7 @@ public class FTPChangelogStorer {
         } catch ( Exception e ) {
             e.printStackTrace();
             try {
+                this.ftpClient.disconnect();
                 this.ftpClient.connect(LOCAL_HOST);
                 int reply = ftpClient.getReplyCode();
 
