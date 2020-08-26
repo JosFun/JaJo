@@ -286,6 +286,11 @@ public class MainActivity extends AppBarActivity {
                     MainActivity.this.setToolBarText( FragmentType.EINKAUFSLISTE );
                     MainActivity.this.fragmentTransition( R.id.frame_layout, MainActivity.this.listenFragment, 1 );
                     return true;
+                case R.id.navigation_settings:
+                    if ( MainActivity.this.viewModel.getCurrentFragment() == FragmentType.SETTINGS ) return true;
+                    MainActivity.this.viewModel.setCurrentFragment( FragmentType.SETTINGS );
+                    MainActivity.this.setToolBarText( FragmentType.SETTINGS );
+                    MainActivity.this.fragmentTransition( R.id.frame_layout, MainActivity.this.settingsFragment, 2);
             }
             return false;
         }
@@ -401,15 +406,8 @@ public class MainActivity extends AppBarActivity {
 
     @Override
     public boolean onOptionsItemSelected (@NonNull MenuItem item) {
-        switch ( item.getItemId()) {
-            case R.id.settings_button:
-                this.viewModel.setCurrentFragment(FragmentType.SETTINGS);
-                this.setToolBarText( this.viewModel.getCurrentFragment());
-                this.fragmentTransition(R.id.frame_layout, this.settingsFragment, 2 );
-                return true;
-            default:
+
                 return super.onOptionsItemSelected( item );
-        }
     }
 
     /**

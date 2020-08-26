@@ -2,6 +2,7 @@
     <string name="app_name">RelOrg</string>
     <string name="title_ausgaben">Ausgaben</string>
     <string name="title_einkaufsliste">Einkaufsliste</string>
+    <string name="title_settings">Einstellungen</string>
 
     <string name="josh_zahlt">Josh zahlt</string>
     <string name="jasmin_zahlt">Jasmin zahlt</string>
