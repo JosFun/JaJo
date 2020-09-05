@@ -50,6 +50,7 @@ public class MainActivity extends AppBarActivity {
     private EinkaufslisteFragment listenFragment;
     private SettingsFragment settingsFragment;
     private AppViewModel viewModel;
+    private BottomNavigationView navigation;
 
     private NotificationBroadcastReceiver notificationBroadcastReceiver;
 
@@ -272,24 +273,30 @@ public class MainActivity extends AppBarActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            for ( int i = 0; i < navigation.getMenu().size(); ++i ) {
+                navigation.getMenu().getItem ( i ).setChecked( false );
+            }
+
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     if ( MainActivity.this.viewModel.getCurrentFragment() == FragmentType.AUSGABEN ) return true;
-
                     MainActivity.this.viewModel.setCurrentFragment( FragmentType.AUSGABEN );
                     MainActivity.this.setToolBarText( FragmentType.AUSGABEN );
+                    item.setChecked(true);
                     MainActivity.this.fragmentTransition( R.id.frame_layout, MainActivity.this.ausgabenFragment, 0 );
                     return true;
                 case R.id.navigation_dashboard:
                     if ( MainActivity.this.viewModel.getCurrentFragment() == FragmentType.EINKAUFSLISTE ) return true;
                     MainActivity.this.viewModel.setCurrentFragment( FragmentType.EINKAUFSLISTE );
                     MainActivity.this.setToolBarText( FragmentType.EINKAUFSLISTE );
+                    item.setChecked(true);
                     MainActivity.this.fragmentTransition( R.id.frame_layout, MainActivity.this.listenFragment, 1 );
                     return true;
                 case R.id.navigation_settings:
                     if ( MainActivity.this.viewModel.getCurrentFragment() == FragmentType.SETTINGS ) return true;
                     MainActivity.this.viewModel.setCurrentFragment( FragmentType.SETTINGS );
                     MainActivity.this.setToolBarText( FragmentType.SETTINGS );
+                    item.setChecked(true);
                     MainActivity.this.fragmentTransition( R.id.frame_layout, MainActivity.this.settingsFragment, 2);
             }
             return false;
@@ -326,7 +333,7 @@ public class MainActivity extends AppBarActivity {
             this.fragmentTransition( R.id.frame_layout, this.settingsFragment, 2 );
         }
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        this.navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         /* Instantiate the Firebase authentication service */
