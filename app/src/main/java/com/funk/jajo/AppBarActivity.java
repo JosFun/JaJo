@@ -19,7 +19,8 @@ public abstract class AppBarActivity extends AppCompatActivity {
     protected enum FragmentType {
         AUSGABEN,
         EINKAUFSLISTE,
-        SETTINGS
+        SETTINGS,
+        NONE
     }
     /**
      * indicates whether or not the toolBar is currently present on the activity.

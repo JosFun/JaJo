@@ -20,7 +20,7 @@ public class AppViewModel extends ViewModel {
      */
     private FirebaseUser fBUser;
 
-    private AppBarActivity.FragmentType currentFragment;
+    private AppBarActivity.FragmentType currentFragment = AppBarActivity.FragmentType.NONE;
 
     /**
      * Specifies what percentage of the overall sum the first person has to pay.

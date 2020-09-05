@@ -312,7 +312,10 @@ public class MainActivity extends AppBarActivity {
         this.appBarPresent = this.setAppBar();
 
         this.viewModel = ViewModelProviders.of ( this ).get( AppViewModel.class );
-        this.viewModel.setCurrentFragment( FragmentType.AUSGABEN );
+
+        if ( this.viewModel.getCurrentFragment() == FragmentType.NONE) {
+            this.viewModel.setCurrentFragment( FragmentType.AUSGABEN );
+        }
 
         /* Try to load existing persons from both the phone's storage and the ftp server */
         this.loadData();
