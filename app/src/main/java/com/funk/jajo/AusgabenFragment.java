@@ -43,11 +43,16 @@ public class AusgabenFragment extends Fragment implements DialogListener {
     private PaymentListAdapter paymentAdapterSecond = null;
 
     protected void updateNextPayer ( ) {
+        double firstRatio = 0.5;
+        if ( this.viewModel != null ) {
+            firstRatio = this.viewModel.getShareRatio();
+        }
+
         TextView nextPayer = this.fragView.findViewById(R.id.next_payer);
         if ( nextPayer == null ) return;
         double sum =
                 viewModel.getFirst().getTotalPayments() + viewModel.getSecond().getTotalPayments();
-        if ( viewModel.getFirst().getTotalPayments() < 0.4 * sum ) {
+        if ( viewModel.getFirst().getTotalPayments() <  firstRatio* sum ) {
             nextPayer.setText(viewModel.getFirst().getName() + " zahlt!");
             nextPayer.setTextColor(ContextCompat.getColor( this.getContext(), R.color.colorFirst));
         } else {
@@ -267,6 +272,16 @@ public class AusgabenFragment extends Fragment implements DialogListener {
         swipeHelperSecond.attachToRecyclerView(recyclerSecond);
 
         return this.fragView;
+    }
+
+    /**
+     * Whenever the {@link Fragment} is changed to this {@link AusgabenFragment}, the next payer
+     * should be updated since the shareRation could have been adjusted on the Settings fragment.
+     */
+    @Override
+    public void onStart ( ) {
+        super.onStart();
+        this.updateNextPayer();
     }
 
     /**

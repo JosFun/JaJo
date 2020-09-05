@@ -78,7 +78,7 @@ public class AppViewModel extends ViewModel {
         this.fBUser = user;
     }
 
-    public void setShareRatio ( double newRation ) { this.shareRatio = newRatio; }
+    public void setShareRatio ( double newRatio ) { this.shareRatio = newRatio; }
 
     public String getUID( ) {
         if ( this.fBUser != null ) {
