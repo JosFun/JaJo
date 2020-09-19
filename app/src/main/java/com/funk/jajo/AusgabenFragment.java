@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.funk.jajo.customtypes.Change;
 import com.funk.jajo.customtypes.Changelog;
 import com.funk.jajo.customtypes.DialogListener;
 import com.funk.jajo.customtypes.Payment;
@@ -313,10 +312,10 @@ public class AusgabenFragment extends Fragment implements DialogListener {
                 Changelog localChanges = this.viewModel.getLocalChanges();
 
                 if ( change != null && localChanges != null ) {
-                    localChanges.addChange( change );
+                    localChanges.addPaymentChange( change );
                 } else {
                     localChanges = new Changelog(this.viewModel.getDeviceName());
-                    localChanges.addChange ( change );
+                    localChanges.addPaymentChange( change );
                     this.viewModel.setLocalChanges(localChanges);
                 }
 

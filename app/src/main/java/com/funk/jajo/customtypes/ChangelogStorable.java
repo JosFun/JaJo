@@ -1,7 +1,6 @@
 package com.funk.jajo.customtypes;
 
 import java.security.InvalidParameterException;
-import java.util.LinkedList;
 
 /**
  * Represents the Changelog that is to be stored on the ftp server.
@@ -39,13 +38,13 @@ public class ChangelogStorable {
                 !this.firstChangelog.getOriginHost().equals(deviceName) &&
                 !this.secondChangelog.getOriginHost().equals(deviceName)){
 
-            if ( this.firstChangelog.getChanges().isEmpty() &&
-                !this.secondChangelog.getChanges().isEmpty()) {
+            if ( this.firstChangelog.getPaymentChanges().isEmpty() &&
+                !this.secondChangelog.getPaymentChanges().isEmpty()) {
 
                 return this.secondChangelog;
 
-            } else if ( this.secondChangelog.getChanges().isEmpty() &&
-                !this.firstChangelog.getChanges().isEmpty()) {
+            } else if ( this.secondChangelog.getPaymentChanges().isEmpty() &&
+                !this.firstChangelog.getPaymentChanges().isEmpty()) {
 
                 return this.firstChangelog;
 
@@ -77,13 +76,13 @@ public class ChangelogStorable {
                 !this.firstChangelog.getOriginHost().equals(deviceName) &&
                         !this.secondChangelog.getOriginHost().equals(deviceName)){
 
-            if ( this.firstChangelog.getChanges().isEmpty() &&
-                    !this.secondChangelog.getChanges().isEmpty()) {
+            if ( this.firstChangelog.getPaymentChanges().isEmpty() &&
+                    !this.secondChangelog.getPaymentChanges().isEmpty()) {
 
                 return this.firstChangelog;
 
-            } else if ( this.secondChangelog.getChanges().isEmpty() &&
-                    !this.firstChangelog.getChanges().isEmpty()) {
+            } else if ( this.secondChangelog.getPaymentChanges().isEmpty() &&
+                    !this.firstChangelog.getPaymentChanges().isEmpty()) {
 
                 return this.secondChangelog;
 

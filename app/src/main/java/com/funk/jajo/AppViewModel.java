@@ -2,7 +2,6 @@ package com.funk.jajo;
 
 import androidx.lifecycle.ViewModel;
 
-import com.funk.jajo.customtypes.Change;
 import com.funk.jajo.customtypes.Changelog;
 import com.funk.jajo.customtypes.PaymentChange;
 import com.funk.jajo.customtypes.Person;
@@ -67,7 +66,7 @@ public class AppViewModel extends ViewModel {
         if ( this.localChanges == null ) {
             this.localChanges = new Changelog( this.deviceName );
         }
-        this.localChanges.addChange( localChange );
+        this.localChanges.addPaymentChange( localChange );
     }
 
     public void setCurrentFragment ( AppBarActivity.FragmentType type ) {

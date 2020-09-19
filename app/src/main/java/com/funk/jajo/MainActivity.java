@@ -117,7 +117,7 @@ public class MainActivity extends AppBarActivity {
 
             /* Iterate through the remote changelog, inspect all the Changes and,
             depending on its type, insert the changes into the offline version of the person. */
-            for ( Change c: remoteChangelog.getChanges() ) {
+            for ( Change c: remoteChangelog.getPaymentChanges() ) {
                 if ( c instanceof PaymentChange ) {
                     PaymentChange p = ( PaymentChange ) c;
                     Payment pay = new Payment( p.getDescription(), p.getMoneyAmount(), p.getCalendar());
@@ -146,7 +146,7 @@ public class MainActivity extends AppBarActivity {
             }
             /* After implementing all the changes in the local version of the Changelog, we can
             * clear the remoteChangelog stored on the device locally.*/
-            remoteChangelog.getChanges().clear();
+            remoteChangelog.getPaymentChanges().clear();
 
         }
 
